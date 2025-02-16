@@ -1,12 +1,20 @@
 import React from "react";
 import CharacterSection from "./CharacterSection"; // Import ส่วนที่แยกมา
 
+
 const HeroSection = () => {
   return (
-    <section className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-      <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#011f4b] via-[#03396c] to-[#005b96] overflow-hidden">
+      
+      {/* Gradient Overlay + Blur */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,91,150,0.4)_0%,_rgba(1,31,75,0.8)_100%)] backdrop-blur-md"></div>
+      
+      {/* Content */}
+      <div className="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between relative z-10">
+        
         {/* Left Section */}
         <div className="lg:w-1/2 text-center lg:text-left">
+          
           {/* Trustpilot Section */}
           <div className="flex items-center justify-center lg:justify-start space-x-2 mb-4">
             <img
@@ -14,30 +22,36 @@ const HeroSection = () => {
               alt="Trustpilot"
               className="w-5"
             />
-            <span className="text-green-400 font-bold">★★★★★</span>
-            <span className="text-sm text-gray-400">210+ 5 Star Reviews</span>
+            <span className="text-green-400 font-bold drop-shadow-md">★★★★★</span>
+            <span className="text-sm text-[#b3cde0] opacity-90">210+ 5 Star Reviews</span>
           </div>
+
           {/* Heading */}
-          <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6">
+          <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 text-[#b3cde0] drop-shadow-lg">
             Buy Roblox Items <br />
-            <span className="text-blue-500">Fast, Easy & Safe</span> with PTSOCK!
+            <span className="text-white bg-clip-text text-transparent bg-gradient-to-r from-[#005b96] to-[#b3cde0]">
+              Fast, Easy & Safe
+            </span> with PTSOCK!
           </h1>
+
           {/* Description */}
-          <p className="text-gray-400 mb-8">
-            PTstock is the fastest and most trusted store for BloxFruits,
-            MM2, Rivals, Blade ball, Adopt me, and Anime Vanguards items. With
-            our automated system, you get your favorite items instantly—no
-            waiting, no worries!
+          <p className="text-[#b3cde0] opacity-95 mb-8 leading-relaxed drop-shadow-sm">
+            PTstock is the fastest and most trusted store for BloxFruits, MM2, 
+            Rivals, Blade Ball, Adopt Me, and Anime Vanguards items. 
+            With our automated system, you get your favorite items instantly—no waiting, no worries!
           </p>
+
           {/* Call to Action Button */}
-          <button className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600">
+          <button className="bg-[#005b96] text-white px-6 py-3 rounded-lg shadow-lg hover:bg-[#03396c] hover:scale-105 transition-all duration-300">
             Start Buying
           </button>
         </div>
 
-        {/* Right Section */}
-        <div className="lg:w-1/2 flex justify-center">
-          <CharacterSection /> {/* แสดง Character Section */}
+        {/* Right Section - Guardian Character */}
+        <div className="lg:w-1/2 flex justify-center mt-10 lg:mt-0 relative">
+          <CharacterSection /> {/* ตัวละครที่ดูเป็น Guardian */}
+          {/* Glow Effect */}
+          <div className="absolute w-40 h-40 bg-[#005b96] opacity-30 blur-3xl"></div>
         </div>
       </div>
     </section>

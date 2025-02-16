@@ -1,16 +1,13 @@
 import React from "react";
-import Navbar from "../components/Navbar/Navbar";
 import HeroSection from "../components/HeroSection/HeroSection";
 import OurGamesSection from "../components/OurGamesSection/OurGamesSection";
-import CreatorSlider from "../components/CreatorSlider/CreatorSlider"; // Import the CreatorSlider
-import Footer from "../components/Footer/Footer"; // Import Footer
+import CreatorSlider from "../components/CreatorSlider/CreatorSlider";
+import OurBestSellers from "../components/OurBestSellers/OurBestSellers";
+import Footer from "../components/Footer/Footer";
 
 const Home = () => {
   return (
     <div>
-      {/* Navbar */}
-      <Navbar />
-
       {/* Hero Section */}
       <HeroSection />
 
@@ -20,7 +17,10 @@ const Home = () => {
       </div>
 
       {/* Creator Slider Section */}
-        <CreatorSlider />
+      <CreatorSlider />
+
+      {/* Our Best Sellers Section */}
+      <OurBestSellers />
 
       {/* Footer */}
       <Footer />
