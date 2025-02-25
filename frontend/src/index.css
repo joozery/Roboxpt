@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4A5568; /* textDark */
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .sidebar-item:hover {
+    background: #F3F4F6; /* lightGray */
+  }
+  
+  .sidebar-item.active {
+    background: #E2E8F0; /* secondary */
+    font-weight: bold;
+  }
+  
+  
