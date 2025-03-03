@@ -6,6 +6,7 @@ import LiveChat from "./components/LiveChat/LiveChat";
 // 📌 Import หน้าเว็บไซต์หลัก
 import Home from "./pages/Home";
 import Store from "./pages/Store";
+import TopupRobux from "./pages/TopupRobux"; // ✅ เพิ่ม Topup Robux
 
 // 📌 Import หน้า Dashboard
 import Dashbord from "./components/Dashbord/Dashbord";
@@ -24,6 +25,7 @@ import SupportTickets from "./components/Dashbord/page/SupportTickets";
 import Tools from "./components/Dashbord/page/Tools";
 import StockItems from "./components/Dashbord/page/StockItems";
 import MapGameCategory from "./components/Dashbord/page/MapGameCategory";
+import TopUpRobuxManagement from "./components/Dashbord/page/TopUpRobuxManagement"; // ✅ เพิ่มเมนูจัดการ TopUp Robux
 
 // 📌 Import หน้า Payment Management (เพิ่มเข้าไป)
 import ManagePayments from "./components/Dashbord/page/ManagePayments";
@@ -68,6 +70,7 @@ function App() {
           <Route path="tools" element={<Tools />} />
           <Route path="stock-items" element={<StockItems />} />
           <Route path="map-game-category" element={<MapGameCategory />} />
+          <Route path="topup-robux-management" element={<TopUpRobuxManagement />} />
 
           {/* ✅ เพิ่มหน้า Payment Management */}
           <Route path="manage-payments" element={<ManagePayments />} />
@@ -78,6 +81,7 @@ function App() {
         {/* ✅ เส้นทางของเว็บไซต์หลัก */}
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/store" element={<Layout><Store /></Layout>} />
+        <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} /> {/* ✅ เพิ่ม Route Topup Robux */}
       </Routes>
     </Router>
   );

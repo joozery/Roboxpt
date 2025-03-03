@@ -4,7 +4,7 @@ import {
   FaHome, FaUserFriends, FaRobot, FaComments, FaMicrophone, FaBlog, FaCreditCard,
   FaBullhorn, FaList, FaCog, FaImages, FaTicketAlt, FaTools, FaThLarge, FaMagic,
   FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes, FaMap,
-  FaMoneyCheckAlt, FaChartLine, FaHistory
+  FaMoneyCheckAlt, FaChartLine, FaHistory, FaMoneyBillWave
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -42,21 +42,9 @@ const Sidebar = () => {
             <FaUserFriends size={18} />
             <span>Personal</span>
           </NavLink>
-          <NavLink to="/dashboard/chat-templates" className="sidebar-item">
-            <FaComments size={18} />
-            <span>Chat Templates</span>
-          </NavLink>
           <NavLink to="/dashboard/subscriptions" className="sidebar-item">
             <FaCreditCard size={18} />
             <span>Subscriptions</span>
-          </NavLink>
-          <NavLink to="/dashboard/media-manager" className="sidebar-item">
-            <FaImages size={18} />
-            <span>Media Manager</span>
-          </NavLink>
-          <NavLink to="/dashboard/support-tickets" className="sidebar-item">
-            <FaTicketAlt size={18} />
-            <span>Support Tickets</span>
           </NavLink>
           <NavLink to="/dashboard/tools" className="sidebar-item">
             <FaTools size={18} />
@@ -88,6 +76,13 @@ const Sidebar = () => {
           <NavLink to="/dashboard/transaction-history" className="sidebar-item">
             <FaHistory size={18} />
             <span>Transaction History</span>
+          </NavLink>
+
+          {/* 🔹 🛒 Top Up Robux Management */}
+          <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Top Up Robux</li>
+          <NavLink to="/dashboard/topup-robux-management" className="sidebar-item">
+            <FaMoneyBillWave size={18} />
+            <span>Manage Top Up Robux</span>
           </NavLink>
         </ul>
 

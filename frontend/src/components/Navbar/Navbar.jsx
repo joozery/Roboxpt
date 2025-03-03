@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
-import { FaStore, FaHeadset, FaBook, FaChevronDown, FaDiscord, FaArrowRight } from "react-icons/fa"; 
+import { 
+  FaStore, FaHeadset, FaBook, FaChevronDown, FaDiscord, 
+  FaArrowRight, FaMoneyBillWave 
+} from "react-icons/fa"; 
 import logo from "../../assets/logo.png";
 import En from "../../assets/EN-full.png";
 import GetStartedModal from "../GetStartedModal/GetStartedModal"; // Import Modal
@@ -19,10 +22,13 @@ const Navbar = () => {
             <span className="text-white text-xl font-semibold">PTStock</span>
           </Link>
 
-          {/* Navigation Links - ใช้ flex-grow เพื่อให้เมนูชิดซ้าย */}
+          {/* Navigation Links */}
           <nav className="hidden md:flex space-x-6 text-sm flex-grow ml-10">
             <Link to="/store" className="hover:text-blue-500 flex items-center">
               <FaStore className="mr-2" /> Store
+            </Link>
+            <Link to="/topuprobux" className="hover:text-green-400 flex items-center">
+              <FaMoneyBillWave className="mr-2" /> Top Up Robux
             </Link>
             <a href="#" className="hover:text-blue-500 flex items-center">
               <FaHeadset className="mr-2" /> Support

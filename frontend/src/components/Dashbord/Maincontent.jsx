@@ -19,6 +19,7 @@ import StockItems from "./page/StockItems";
 import ManagePayments from "./page/ManagePayments"; // ✅ เพิ่มเมนู Payment
 import PaymentReports from "./page/PaymentReports"; // ✅ เพิ่มเมนู Payment
 import TransactionHistory from "./page/TransactionHistory"; // ✅ เพิ่มเมนู Payment
+import TopUpRobuxManagement from "./page/TopUpRobuxManagement"; // ✅ เพิ่มเมนูจัดการ TopUp Robux
 
 const MainContent = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const MainContent = () => {
       {currentPath === "/dashboard/manage-payments" && <ManagePayments />} {/* ✅ เมนูใหม่ */}
       {currentPath === "/dashboard/payment-reports" && <PaymentReports />} {/* ✅ เมนูใหม่ */}
       {currentPath === "/dashboard/transaction-history" && <TransactionHistory />} {/* ✅ เมนูใหม่ */}
+      {currentPath === "/dashboard/topup-robux-management" && <TopUpRobuxManagement />} {/* ✅ เพิ่มเมนูใหม่ */}
 
       {/* Default Dashboard Content */}
       {currentPath === "/dashboard" && (
