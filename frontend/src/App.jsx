@@ -25,6 +25,11 @@ import Tools from "./components/Dashbord/page/Tools";
 import StockItems from "./components/Dashbord/page/StockItems";
 import MapGameCategory from "./components/Dashbord/page/MapGameCategory";
 
+// 📌 Import หน้า Payment Management (เพิ่มเข้าไป)
+import ManagePayments from "./components/Dashbord/page/ManagePayments";
+import PaymentReports from "./components/Dashbord/page/PaymentReports";
+import TransactionHistory from "./components/Dashbord/page/TransactionHistory";
+
 import "./App.css";
 
 // 📌 Layout สำหรับหน้าเว็บหลัก
@@ -63,6 +68,11 @@ function App() {
           <Route path="tools" element={<Tools />} />
           <Route path="stock-items" element={<StockItems />} />
           <Route path="map-game-category" element={<MapGameCategory />} />
+
+          {/* ✅ เพิ่มหน้า Payment Management */}
+          <Route path="manage-payments" element={<ManagePayments />} />
+          <Route path="payment-reports" element={<PaymentReports />} />
+          <Route path="transaction-history" element={<TransactionHistory />} />
         </Route>
 
         {/* ✅ เส้นทางของเว็บไซต์หลัก */}

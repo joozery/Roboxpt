@@ -15,7 +15,10 @@ import WebsiteSetup from "./page/WebsiteSetup";
 import MediaManager from "./page/MediaManager";
 import SupportTickets from "./page/SupportTickets";
 import Tools from "./page/Tools";
-import StockItems from "./page/StockItems"; // ✅ เพิ่ม StockItems
+import StockItems from "./page/StockItems"; 
+import ManagePayments from "./page/ManagePayments"; // ✅ เพิ่มเมนู Payment
+import PaymentReports from "./page/PaymentReports"; // ✅ เพิ่มเมนู Payment
+import TransactionHistory from "./page/TransactionHistory"; // ✅ เพิ่มเมนู Payment
 
 const MainContent = () => {
   const location = useLocation();
@@ -36,7 +39,10 @@ const MainContent = () => {
       {currentPath.startsWith("/dashboard/media-manager") && <MediaManager />}
       {currentPath.startsWith("/dashboard/support-tickets") && <SupportTickets />}
       {currentPath.startsWith("/dashboard/tools") && <Tools />}
-      {currentPath === "/dashboard/stock-items" && <StockItems />} {/* ✅ เพิ่ม Stock Items */}
+      {currentPath === "/dashboard/stock-items" && <StockItems />}
+      {currentPath === "/dashboard/manage-payments" && <ManagePayments />} {/* ✅ เมนูใหม่ */}
+      {currentPath === "/dashboard/payment-reports" && <PaymentReports />} {/* ✅ เมนูใหม่ */}
+      {currentPath === "/dashboard/transaction-history" && <TransactionHistory />} {/* ✅ เมนูใหม่ */}
 
       {/* Default Dashboard Content */}
       {currentPath === "/dashboard" && (

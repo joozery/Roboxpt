@@ -8,7 +8,7 @@ const API_CATEGORIES = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categori
 const StockItems = () => {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null); // ✅ หมวดหมู่ที่เลือก
+  const [selectedCategory, setSelectedCategory] = useState(null); // ✅ ตัวแปรเก็บหมวดหมู่ที่เลือก
   const [newItem, setNewItem] = useState({ name: "", category: "", price: "", oldPrice: "", rarity: "Common", image: null });
   const [priceAdjustment, setPriceAdjustment] = useState(0);
 
@@ -70,15 +70,8 @@ const StockItems = () => {
     if (!priceAdjustment) return;
 
     try {
-      const updatedItems = items.map(item => ({
-        ...item,
-        price: (item.price * (1 + priceAdjustment / 100)).toFixed(2),
-      }));
-
-      setItems(updatedItems);
-
       await axios.put(`${API_ITEMS}/adjust-prices`, { percentage: priceAdjustment });
-
+      fetchItems(); // ✅ รีโหลดรายการสินค้า
     } catch (error) {
       console.error("Error adjusting prices:", error);
     }
@@ -141,6 +134,14 @@ const StockItems = () => {
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
+           {/* ✅ เพิ่มช่องเลือกความแรร์ */}
+  <select value={newItem.rarity} onChange={(e) => setNewItem({ ...newItem, rarity: e.target.value })} className="p-2 border rounded-md">
+    <option value="Common">Common</option>
+    <option value="Uncommon">Uncommon</option>
+    <option value="Rare">Rare</option>
+    <option value="Legendary">Legendary</option>
+    <option value="Mythical">Mythical</option>
+  </select>
 
           <input type="number" placeholder="Price" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} className="p-2 border rounded-md" />
           <input type="number" placeholder="Old Price (optional)" value={newItem.oldPrice} onChange={(e) => setNewItem({ ...newItem, oldPrice: e.target.value })} className="p-2 border rounded-md" />
@@ -161,13 +162,19 @@ const StockItems = () => {
       <div className="grid grid-cols-5 gap-6">
         {filteredItems.map((item) => (
           <div key={item.id} className="bg-gray-900 p-4 rounded-lg text-white shadow-md relative">
+            <span className={`absolute top-2 left-2 px-3 py-1 rounded-full text-sm font-bold ${item.rarity === "Legendary" ? "bg-purple-600" : item.rarity === "Rare" ? "bg-blue-500" : item.rarity === "Mythical" ? "bg-red-600" : "bg-gray-500"}`}>
+              {item.rarity}
+            </span>
+
             <img src={item.image_url} alt={item.name} className="w-full h-32 object-contain" />
+
+            <p className="text-gray-400 text-sm mt-2">{item.category_name || "Other"}</p>
             <h3 className="text-lg font-bold">{item.name}</h3>
 
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-xl font-bold">฿{item.price}</span>
+              <span className="text-xl font-bold">rb{item.price}</span>
               {item.oldPrice && item.oldPrice !== "0.00" && (
-                <span className="text-red-400 line-through text-sm">฿{item.oldPrice}</span>
+                <span className="text-red-400 line-through text-sm">rb{item.oldPrice}</span>
               )}
             </div>
 

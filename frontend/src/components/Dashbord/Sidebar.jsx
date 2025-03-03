@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import {
   FaHome, FaUserFriends, FaRobot, FaComments, FaMicrophone, FaBlog, FaCreditCard,
   FaBullhorn, FaList, FaCog, FaImages, FaTicketAlt, FaTools, FaThLarge, FaMagic,
-  FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes, FaMap
+  FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes, FaMap,
+  FaMoneyCheckAlt, FaChartLine, FaHistory
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -41,41 +42,13 @@ const Sidebar = () => {
             <FaUserFriends size={18} />
             <span>Personal</span>
           </NavLink>
-          <NavLink to="/dashboard/use-cases" className="sidebar-item">
-            <FaRobot size={18} />
-            <span>Use Cases Templates</span>
-          </NavLink>
           <NavLink to="/dashboard/chat-templates" className="sidebar-item">
             <FaComments size={18} />
             <span>Chat Templates</span>
           </NavLink>
-          <NavLink to="/dashboard/ai-features" className="sidebar-item">
-            <FaMagic size={18} />
-            <span>AI Features</span>
-          </NavLink>
-          <NavLink to="/dashboard/ai-voices" className="sidebar-item">
-            <FaMicrophone size={18} />
-            <span>AI Voices</span>
-          </NavLink>
-          <NavLink to="/dashboard/blogs" className="sidebar-item">
-            <FaBlog size={18} />
-            <span>Blogs</span>
-          </NavLink>
           <NavLink to="/dashboard/subscriptions" className="sidebar-item">
             <FaCreditCard size={18} />
             <span>Subscriptions</span>
-          </NavLink>
-          <NavLink to="/dashboard/marketing" className="sidebar-item">
-            <FaBullhorn size={18} />
-            <span>Marketing</span>
-          </NavLink>
-          <NavLink to="/dashboard/menus" className="sidebar-item">
-            <FaList size={18} />
-            <span>Menus</span>
-          </NavLink>
-          <NavLink to="/dashboard/website-setup" className="sidebar-item">
-            <FaCog size={18} />
-            <span>Website Setup</span>
           </NavLink>
           <NavLink to="/dashboard/media-manager" className="sidebar-item">
             <FaImages size={18} />
@@ -90,16 +63,31 @@ const Sidebar = () => {
             <span>Tools</span>
           </NavLink>
 
-          {/* 🔹 เพิ่ม Stock Items */}
+          {/* 🔹 Stock Items */}
           <NavLink to="/dashboard/stock-items" className="sidebar-item">
             <FaBoxes size={18} />
             <span>Stock Items</span>
           </NavLink>
 
-          {/* 🔹 เพิ่ม Map Game Category */}
+          {/* 🔹 Map Game Category */}
           <NavLink to="/dashboard/map-game-category" className="sidebar-item">
             <FaMap size={18} />
             <span>Map Game Category</span>
+          </NavLink>
+
+          {/* 🔹 🏦 เมนู Payment Management */}
+          <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Payments</li>
+          <NavLink to="/dashboard/manage-payments" className="sidebar-item">
+            <FaMoneyCheckAlt size={18} />
+            <span>Manage Payments</span>
+          </NavLink>
+          <NavLink to="/dashboard/payment-reports" className="sidebar-item">
+            <FaChartLine size={18} />
+            <span>Payment Reports</span>
+          </NavLink>
+          <NavLink to="/dashboard/transaction-history" className="sidebar-item">
+            <FaHistory size={18} />
+            <span>Transaction History</span>
           </NavLink>
         </ul>
 
@@ -127,7 +115,7 @@ const Sidebar = () => {
           )}
         </div>
 
-        {/* 🔹 Footer & User Profile (รวมใน Scrollbar) */}
+        {/* 🔹 Footer & User Profile */}
         <div className="mt-8 pb-6 border-t pt-6">
           <ul className="space-y-2">
             <NavLink to="/dashboard/settings" className="sidebar-item">
