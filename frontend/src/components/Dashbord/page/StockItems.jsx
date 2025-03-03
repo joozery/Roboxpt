@@ -1,145 +1,178 @@
-import React, { useState } from "react";
-import { FaShoppingCart, FaPlus } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaPercent, FaTrash, FaImage, FaPlus } from "react-icons/fa";
 
-// Mock Data: สินค้าทั้งหมด
-const initialItems = [
-  {
-    id: 1,
-    name: "Ghost",
-    category: "Mystic Item",
-    price: 350.99,
-    oldPrice: 420.50,
-    rarity: "Rare",
-    image: "/assets/Ghost.webp",  // path ที่ถูกต้อง
-  },
-  {
-    id: 2,
-    name: "Shadow",
-    category: "Legendary Weapon",
-    price: 599.99,
-    oldPrice: 720.00,
-    rarity: "Mythical",
-    image: "/assets/Shadow.webp", // path ที่ถูกต้อง
-  },
-  // สินค้าอื่นๆ...
-];
+const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
+const API_CATEGORIES = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories";
 
 const StockItems = () => {
-  const [items, setItems] = useState(initialItems);
-  const [newItem, setNewItem] = useState({
-    name: "",
-    category: "",
-    price: "",
-    oldPrice: "",
-    rarity: "Common",
-    image: "",
-  });
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null); // ✅ หมวดหมู่ที่เลือก
+  const [newItem, setNewItem] = useState({ name: "", category: "", price: "", oldPrice: "", rarity: "Common", image: null });
+  const [priceAdjustment, setPriceAdjustment] = useState(0);
 
-  // Handle เพิ่มสินค้าใหม่
-  const handleAddItem = () => {
-    if (!newItem.name || !newItem.price) return alert("กรุณากรอกข้อมูลให้ครบ!");
-    setItems([...items, { id: items.length + 1, ...newItem }]);
-    setNewItem({ name: "", category: "", price: "", oldPrice: "", rarity: "Common", image: "" });
+  useEffect(() => {
+    fetchItems();
+    fetchCategories();
+  }, []);
+
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(API_ITEMS);
+      setItems(response.data);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
   };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(API_CATEGORIES);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    setNewItem({ ...newItem, image: file });
+  };
+
+  const handleAddItem = async () => {
+    if (!newItem.name || !newItem.price || !newItem.category || !newItem.rarity || !newItem.image) {
+      alert("กรุณากรอกข้อมูลให้ครบและอัปโหลดรูปภาพ!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", newItem.name);
+    formData.append("category_id", newItem.category);
+    formData.append("price", newItem.price);
+    formData.append("oldPrice", newItem.oldPrice || null);
+    formData.append("rarity", newItem.rarity);
+    formData.append("image", newItem.image);
+
+    try {
+      const response = await axios.post(API_ITEMS, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setItems([...items, response.data]);
+      setNewItem({ name: "", category: "", price: "", oldPrice: "", rarity: "Common", image: null });
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
+  };
+
+  // ✅ ปรับราคาตามเปอร์เซ็นต์
+  const handleAdjustPrices = async () => {
+    if (!priceAdjustment) return;
+
+    try {
+      const updatedItems = items.map(item => ({
+        ...item,
+        price: (item.price * (1 + priceAdjustment / 100)).toFixed(2),
+      }));
+
+      setItems(updatedItems);
+
+      await axios.put(`${API_ITEMS}/adjust-prices`, { percentage: priceAdjustment });
+
+    } catch (error) {
+      console.error("Error adjusting prices:", error);
+    }
+  };
+
+  // ✅ กรองสินค้าตามหมวดหมู่
+  const filteredItems = selectedCategory
+    ? items.filter(item => item.category_id === selectedCategory)
+    : items;
 
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold text-purple-700">📦 Stock Items</h1>
-      <p className="text-gray-600">Manage your stock inventory easily.</p>
 
-      {/* Form เพิ่มสินค้า */}
+      {/* ✅ แท็บหมวดหมู่ */}
+      <div className="flex gap-4 overflow-x-auto">
+        <button
+          className={`px-4 py-2 rounded-md ${selectedCategory === null ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-700"}`}
+          onClick={() => setSelectedCategory(null)}
+        >
+          All Categories
+        </button>
+        {categories.map(cat => (
+          <button
+            key={cat.id}
+            className={`px-4 py-2 rounded-md ${selectedCategory === cat.id ? "bg-purple-600 text-white" : "bg-gray-200 text-gray-700"}`}
+            onClick={() => setSelectedCategory(cat.id)}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+
+      {/* ✅ ปรับราคาทั้งหมด */}
+      <div className="bg-white p-6 rounded-lg shadow-md flex gap-4">
+        <input
+          type="number"
+          placeholder="Adjust Price (%)"
+          value={priceAdjustment}
+          onChange={(e) => setPriceAdjustment(e.target.value)}
+          className="p-2 border rounded-md w-32"
+        />
+        <button
+          onClick={handleAdjustPrices}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700"
+        >
+          <FaPercent /> Adjust Prices
+        </button>
+      </div>
+
+      {/* ✅ Form เพิ่มสินค้า */}
       <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
         <h2 className="text-lg font-bold text-gray-700">➕ Add New Item</h2>
-        <div className="grid grid-cols-3 gap-4">
-          <input
-            type="text"
-            placeholder="Item Name"
-            value={newItem.name}
-            onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-            className="p-2 border rounded-md"
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={newItem.category}
-            onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-            className="p-2 border rounded-md"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={newItem.price}
-            onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
-            className="p-2 border rounded-md"
-          />
-          <input
-            type="number"
-            placeholder="Old Price"
-            value={newItem.oldPrice}
-            onChange={(e) => setNewItem({ ...newItem, oldPrice: e.target.value })}
-            className="p-2 border rounded-md"
-          />
-          <select
-            value={newItem.rarity}
-            onChange={(e) => setNewItem({ ...newItem, rarity: e.target.value })}
-            className="p-2 border rounded-md"
-          >
-            <option value="Common">Common</option>
-            <option value="Rare">Rare</option>
-            <option value="Legendary">Legendary</option>
-            <option value="Mythical">Mythical</option>
+        <div className="grid grid-cols-4 gap-4">
+          <input type="text" placeholder="Item Name" value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} className="p-2 border rounded-md" />
+          
+          <select value={newItem.category} onChange={(e) => setNewItem({ ...newItem, category: e.target.value })} className="p-2 border rounded-md">
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
           </select>
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={newItem.image}
-            onChange={(e) => setNewItem({ ...newItem, image: e.target.value })}
-            className="p-2 border rounded-md"
-          />
+
+          <input type="number" placeholder="Price" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} className="p-2 border rounded-md" />
+          <input type="number" placeholder="Old Price (optional)" value={newItem.oldPrice} onChange={(e) => setNewItem({ ...newItem, oldPrice: e.target.value })} className="p-2 border rounded-md" />
+
+          {/* ✅ เปลี่ยนจาก Image URL เป็น File Upload */}
+          <label className="flex items-center gap-2 cursor-pointer bg-gray-100 p-2 rounded-md border">
+            <FaImage className="text-gray-500" />
+            <span className="text-gray-600">Upload Image</span>
+            <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+          </label>
         </div>
-        <button
-          onClick={handleAddItem}
-          className="bg-purple-600 text-white px-4 py-2 rounded-md flex items-center gap-2"
-        >
+        <button onClick={handleAddItem} className="bg-purple-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-purple-700">
           <FaPlus /> Add Item
         </button>
       </div>
 
-      {/* แสดงสินค้าเป็น Card UI */}
+      {/* ✅ แสดงสินค้า */}
       <div className="grid grid-cols-5 gap-6">
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <div key={item.id} className="bg-gray-900 p-4 rounded-lg text-white shadow-md relative">
-            {/* Badge Rarity */}
-            <span
-              className={`absolute top-2 left-2 px-3 py-1 rounded-full text-sm font-bold ${
-                item.rarity === "Legendary"
-                  ? "bg-purple-600"
-                  : item.rarity === "Rare"
-                  ? "bg-blue-500"
-                  : item.rarity === "Mythical"
-                  ? "bg-red-600"
-                  : "bg-gray-500"
-              }`}
-            >
-              {item.rarity}
-            </span>
-
-            {/* รูปภาพสินค้า */}
-            <img src={item.image} alt={item.name} className="w-full h-32 object-contain" />
-
-            {/* ข้อมูลสินค้า */}
-            <p className="text-gray-400 text-sm mt-2">{item.category || "Other"}</p>
+            <img src={item.image_url} alt={item.name} className="w-full h-32 object-contain" />
             <h3 className="text-lg font-bold">{item.name}</h3>
 
-            {/* ราคา */}
             <div className="flex items-center gap-2 mt-1">
               <span className="text-xl font-bold">฿{item.price}</span>
-              {item.oldPrice && <span className="text-red-400 line-through text-sm">฿{item.oldPrice}</span>}
+              {item.oldPrice && item.oldPrice !== "0.00" && (
+                <span className="text-red-400 line-through text-sm">฿{item.oldPrice}</span>
+              )}
             </div>
 
-            {/* ปุ่ม Add to Cart */}
-            <button className="absolute bottom-2 right-2 bg-purple-600 p-2 rounded-full text-white">
-              <FaShoppingCart />
+            <button className="absolute bottom-2 right-2 bg-red-600 p-2 rounded-full text-white hover:bg-red-700">
+              <FaTrash />
             </button>
           </div>
         ))}

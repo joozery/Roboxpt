@@ -23,6 +23,7 @@ import MediaManager from "./components/Dashbord/page/MediaManager";
 import SupportTickets from "./components/Dashbord/page/SupportTickets";
 import Tools from "./components/Dashbord/page/Tools";
 import StockItems from "./components/Dashbord/page/StockItems";
+import MapGameCategory from "./components/Dashbord/page/MapGameCategory";
 
 import "./App.css";
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="support-tickets" element={<SupportTickets />} />
           <Route path="tools" element={<Tools />} />
           <Route path="stock-items" element={<StockItems />} />
+          <Route path="map-game-category" element={<MapGameCategory />} />
         </Route>
 
         {/* ✅ เส้นทางของเว็บไซต์หลัก */}

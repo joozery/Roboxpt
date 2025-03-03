@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   FaHome, FaUserFriends, FaRobot, FaComments, FaMicrophone, FaBlog, FaCreditCard,
   FaBullhorn, FaList, FaCog, FaImages, FaTicketAlt, FaTools, FaThLarge, FaMagic,
-  FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes
+  FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes, FaMap
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -94,6 +94,12 @@ const Sidebar = () => {
           <NavLink to="/dashboard/stock-items" className="sidebar-item">
             <FaBoxes size={18} />
             <span>Stock Items</span>
+          </NavLink>
+
+          {/* 🔹 เพิ่ม Map Game Category */}
+          <NavLink to="/dashboard/map-game-category" className="sidebar-item">
+            <FaMap size={18} />
+            <span>Map Game Category</span>
           </NavLink>
         </ul>
 
