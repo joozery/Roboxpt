@@ -9,32 +9,32 @@ import Store from "./pages/Store";
 import TopupRobux from "./pages/Topuprobux";
 
 // 📌 Import หน้า Dashboard
-import Dashbord from "./components/Dashbord/Dashbord";
-import Overview from "./components/Dashbord/page/Overview";
-import Personal from "./components/Dashbord/page/Personal";
-import UseCases from "./components/Dashbord/page/UseCases";
-import ChatTemplates from "./components/Dashbord/page/ChatTemplates";
-import AIVoices from "./components/Dashbord/page/AIVoices";
-import Blogs from "./components/Dashbord/page/Blogs";
-import Subscriptions from "./components/Dashbord/page/Subscriptions";
-import Marketing from "./components/Dashbord/page/Marketing";
-import Menus from "./components/Dashbord/page/Menus";
-import WebsiteSetup from "./components/Dashbord/page/WebsiteSetup";
-import MediaManager from "./components/Dashbord/page/MediaManager";
-import SupportTickets from "./components/Dashbord/page/SupportTickets";
-import Tools from "./components/Dashbord/page/Tools";
-import StockItems from "./components/Dashbord/page/StockItems";
-import MapGameCategory from "./components/Dashbord/page/MapGameCategory";
-import TopUpRobuxManagement from "./components/Dashbord/page/TopUpRobuxManagement";
+import Dashbord from "./components/Dashboard/Dashbord";
+import Overview from "./components/Dashboard/page/Overview";
+import Personal from "./components/Dashboard/page/Personal";
+import UseCases from "./components/Dashboard/page/UseCases";
+import ChatTemplates from "./components/Dashboard/page/ChatTemplates";
+import AIVoices from "./components/Dashboard/page/AIVoices";
+import Blogs from "./components/Dashboard/page/Blogs";
+import Subscriptions from "./components/Dashboard/page/Subscriptions";
+import Marketing from "./components/Dashboard/page/Marketing";
+import Menus from "./components/Dashboard/page/Menus";
+import WebsiteSetup from "./components/Dashboard/page/WebsiteSetup";
+import MediaManager from "./components/Dashboard/page/MediaManager";
+import SupportTickets from "./components/Dashboard/page/SupportTickets";
+import Tools from "./components/Dashboard/page/Tools";
+import StockItems from "./components/Dashboard/page/StockItems";
+import MapGameCategory from "./components/Dashboard/page/MapGameCategory";
+import TopUpRobuxManagement from "./components/Dashboard/page/TopUpRobuxManagement";
 
 // 📌 Import หน้า Payment Management
-import ManagePayments from "./components/Dashbord/page/ManagePayments";
-import PaymentReports from "./components/Dashbord/page/PaymentReports";
-import TransactionHistory from "./components/Dashbord/page/TransactionHistory";
-import ManageAdmins from "./components/Dashbord/page/ManageAdmins";
+import ManagePayments from "./components/Dashboard/page/ManagePayments";
+import PaymentReports from "./components/Dashboard/page/PaymentReports";
+import TransactionHistory from "./components/Dashboard/page/TransactionHistory";
+import ManageAdmins from "./components/Dashboard/page/ManageAdmins";
 
 // ✅ Import หน้า LoginAdmin
-import LoginAdmin from "./components/Dashbord/LoginAdmin"; // ✅ เช็คโฟลเดอร์ว่าชื่อ Dashboard หรือ Dashbord
+import LoginAdmin from "./components/Dashboard/LoginAdmin"; // ✅ เช็คโฟลเดอร์ว่าชื่อ Dashboard หรือ Dashbord
 
 import "./App.css";
 
