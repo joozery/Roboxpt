@@ -34,7 +34,7 @@ import TransactionHistory from "./components/Dashbord/page/TransactionHistory";
 import ManageAdmins from "./components/Dashbord/page/ManageAdmins";
 
 // ✅ Import หน้า LoginAdmin
-import LoginAdmin from "./components/Dashbord/LoginAdmin";
+import LoginAdmin from "./components/Dashbord/LoginAdmin"; // ✅ เช็คโฟลเดอร์ว่าชื่อ Dashboard หรือ Dashbord
 
 import "./App.css";
 
