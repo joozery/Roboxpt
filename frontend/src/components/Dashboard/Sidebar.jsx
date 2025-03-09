@@ -81,6 +81,11 @@ const Sidebar = () => {
             <FaMap size={18} />
             <span>Stock Items</span>
           </NavLink>
+           {/* 🔹 ✅ เพิ่มเมนู "Map Game Category" */}
+           <NavLink to="/dashboard/map-game-category" className="sidebar-item">
+            <FaMap size={18} />
+            <span>Map Game Category</span>
+          </NavLink>
 
           {/* 🔹 Payments */}
           <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Payments</li>
