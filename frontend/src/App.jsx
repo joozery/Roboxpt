@@ -63,9 +63,9 @@ function App() {
     <Router>
       <Routes>
         {/* ✅ เส้นทางของ Dashboard */}
-        <Route path="/dashboard/login" element={<LoginAdmin />} />
+        <Route path="/dashbord/login" element={<LoginAdmin />} />
         <Route 
-          path="/dashboard/*" 
+          path="/dashbord/*" 
           element={
             <ProtectedRoute>
               <Dashbord />
