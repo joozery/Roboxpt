@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import LiveChat from "./components/LiveChat/LiveChat";
 
@@ -25,12 +25,16 @@ import SupportTickets from "./components/Dashbord/page/SupportTickets";
 import Tools from "./components/Dashbord/page/Tools";
 import StockItems from "./components/Dashbord/page/StockItems";
 import MapGameCategory from "./components/Dashbord/page/MapGameCategory";
-import TopUpRobuxManagement from "./components/Dashbord/page/TopUpRobuxManagement"; // ✅ เพิ่มเมนูจัดการ TopUp Robux
+import TopUpRobuxManagement from "./components/Dashbord/page/TopUpRobuxManagement";
 
-// 📌 Import หน้า Payment Management (เพิ่มเข้าไป)
+// 📌 Import หน้า Payment Management
 import ManagePayments from "./components/Dashbord/page/ManagePayments";
 import PaymentReports from "./components/Dashbord/page/PaymentReports";
 import TransactionHistory from "./components/Dashbord/page/TransactionHistory";
+import ManageAdmins from "./components/Dashbord/page/ManageAdmins";
+
+// ✅ Import หน้า LoginAdmin
+import LoginAdmin from "./components/Dashbord/LoginAdmin";
 
 import "./App.css";
 
@@ -48,12 +52,26 @@ const Layout = ({ children }) => {
   );
 };
 
+// 📌 **ProtectedRoute** เช็คว่ามี Token หรือไม่
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = !!localStorage.getItem("adminToken");
+  return isAuthenticated ? children : <Navigate to="/dashboard/login" />;
+};
+
 function App() {
   return (
     <Router>
       <Routes>
         {/* ✅ เส้นทางของ Dashboard */}
-        <Route path="/dashboard/*" element={<Dashbord />}>
+        <Route path="/dashboard/login" element={<LoginAdmin />} />
+        <Route 
+          path="/dashboard/*" 
+          element={
+            <ProtectedRoute>
+              <Dashbord />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<Overview />} />
           <Route path="overview" element={<Overview />} />
           <Route path="personal" element={<Personal />} />
@@ -71,17 +89,16 @@ function App() {
           <Route path="stock-items" element={<StockItems />} />
           <Route path="map-game-category" element={<MapGameCategory />} />
           <Route path="topup-robux-management" element={<TopUpRobuxManagement />} />
-
-          {/* ✅ เพิ่มหน้า Payment Management */}
           <Route path="manage-payments" element={<ManagePayments />} />
           <Route path="payment-reports" element={<PaymentReports />} />
           <Route path="transaction-history" element={<TransactionHistory />} />
+          <Route path="manage-admins" element={<ManageAdmins />} />
         </Route>
 
         {/* ✅ เส้นทางของเว็บไซต์หลัก */}
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/store" element={<Layout><Store /></Layout>} />
-        <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} /> {/* ✅ เพิ่ม Route Topup Robux */}
+        <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} />
       </Routes>
     </Router>
   );

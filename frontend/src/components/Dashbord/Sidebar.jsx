@@ -1,18 +1,46 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  FaHome, FaUserFriends, FaRobot, FaComments, FaMicrophone, FaBlog, FaCreditCard,
-  FaBullhorn, FaList, FaCog, FaImages, FaTicketAlt, FaTools, FaThLarge, FaMagic,
-  FaSearch, FaChevronDown, FaExchangeAlt, FaQuestionCircle, FaUser, FaBoxes, FaMap,
-  FaMoneyCheckAlt, FaChartLine, FaHistory, FaMoneyBillWave
+  FaHome, FaUserFriends, FaCreditCard, FaTools, FaThLarge, FaMap,
+  FaMoneyCheckAlt, FaChartLine, FaHistory, FaMoneyBillWave, FaUsersCog,
+  FaCog, FaQuestionCircle, FaUser, FaExchangeAlt, FaSearch
 } from "react-icons/fa";
+import axios from "axios";
+
+const API_ADMIN_INFO = "https://serverpt-6497ec45bb3e.herokuapp.com/api/admin/me"; // ✅ ใช้ API จริง
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showLogout, setShowLogout] = useState(false);
+  const [admin, setAdmin] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAdminInfo = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) return;
+
+      try {
+        const response = await axios.get(API_ADMIN_INFO, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAdmin(response.data.admin);
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+
+    fetchAdminInfo();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/dashboard/login");
+  };
 
   return (
     <div className="w-80 h-screen bg-white shadow-lg flex flex-col">
-      {/* 🔹 ส่วน Header + ช่องค้นหา */}
+      {/* 🔹 Header + ช่องค้นหา */}
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-purple-700">PTSTOCK</h2>
@@ -30,9 +58,8 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* 🔹 Scrollable Area รวมเมนู + Footer + User Profile */}
+      {/* 🔹 Scrollable Menu */}
       <div className="flex-1 overflow-y-auto px-6 max-h-screen">
-        {/* 🔹 เมนูหลัก */}
         <ul className="space-y-2">
           <NavLink to="/dashboard/overview" className="sidebar-item">
             <FaThLarge size={18} />
@@ -50,20 +77,12 @@ const Sidebar = () => {
             <FaTools size={18} />
             <span>Tools</span>
           </NavLink>
-
-          {/* 🔹 Stock Items */}
           <NavLink to="/dashboard/stock-items" className="sidebar-item">
-            <FaBoxes size={18} />
+            <FaMap size={18} />
             <span>Stock Items</span>
           </NavLink>
 
-          {/* 🔹 Map Game Category */}
-          <NavLink to="/dashboard/map-game-category" className="sidebar-item">
-            <FaMap size={18} />
-            <span>Map Game Category</span>
-          </NavLink>
-
-          {/* 🔹 🏦 เมนู Payment Management */}
+          {/* 🔹 Payments */}
           <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Payments</li>
           <NavLink to="/dashboard/manage-payments" className="sidebar-item">
             <FaMoneyCheckAlt size={18} />
@@ -78,40 +97,23 @@ const Sidebar = () => {
             <span>Transaction History</span>
           </NavLink>
 
-          {/* 🔹 🛒 Top Up Robux Management */}
+          {/* 🔹 Top Up Robux */}
           <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Top Up Robux</li>
           <NavLink to="/dashboard/topup-robux-management" className="sidebar-item">
             <FaMoneyBillWave size={18} />
             <span>Manage Top Up Robux</span>
           </NavLink>
+
+          {/* 🔹 Admin Management */}
+          <li className="mt-4 text-gray-600 font-bold text-sm uppercase">Admin Management</li>
+          <NavLink to="/dashboard/manage-admins" className="sidebar-item">
+            <FaUsersCog size={18} />
+            <span>Manage Admins</span>
+          </NavLink>
         </ul>
 
-        {/* 🔹 Dropdown Menu */}
-        <div className="mt-6">
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center justify-between w-full text-purple-700 font-medium py-3 px-4 rounded-md border border-purple-300 hover:bg-purple-100"
-          >
-            <span>+ Add quick link</span>
-            <FaChevronDown className={`transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
-          </button>
-          {isDropdownOpen && (
-            <ul className="mt-2 space-y-2 pl-4">
-              <NavLink to="/dashboard/transfer-money" className="sidebar-item">
-                <span>💰 Transfer Money</span>
-              </NavLink>
-              <NavLink to="/dashboard/investment-news" className="sidebar-item">
-                <span>📈 Investment News</span>
-              </NavLink>
-              <NavLink to="/dashboard/vacation-goals" className="sidebar-item">
-                <span>🏖 Vacation Goals</span>
-              </NavLink>
-            </ul>
-          )}
-        </div>
-
         {/* 🔹 Footer & User Profile */}
-        <div className="mt-8 pb-6 border-t pt-6">
+        <div className="mt-8 pb-6 border-t pt-6 relative">
           <ul className="space-y-2">
             <NavLink to="/dashboard/settings" className="sidebar-item">
               <FaCog size={18} />
@@ -123,14 +125,33 @@ const Sidebar = () => {
             </NavLink>
           </ul>
 
-          {/* 🔹 User Profile */}
-          <div className="flex items-center mt-8 p-4 rounded-lg bg-purple-100 hover:bg-purple-200 cursor-pointer shadow-md transition-all">
-            <FaUser size={24} className="text-purple-600" />
-            <div className="ml-3">
-              <h3 className="text-sm font-bold text-purple-800">Jennifer Clomin</h3>
-              <p className="text-xs text-purple-600">jennifer.clom@email.com</p>
+          {/* 🔹 User Profile + Logout Popup */}
+          {admin && (
+            <div className="relative">
+              <div
+                className="flex items-center mt-8 p-4 rounded-lg bg-purple-100 hover:bg-purple-200 cursor-pointer shadow-md transition-all"
+                onClick={() => setShowLogout(!showLogout)}
+              >
+                <FaUser size={24} className="text-purple-600" />
+                <div className="ml-3">
+                  <h3 className="text-sm font-bold text-purple-800">{admin.name}</h3>
+                  <p className="text-xs text-purple-600">{admin.email}</p>
+                </div>
+              </div>
+
+              {/* 🔹 Popup Logout */}
+              {showLogout && (
+                <div className="absolute bottom-16 left-0 w-full bg-white shadow-md rounded-md p-3">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-red-600 font-medium py-2 hover:bg-gray-100 rounded-md"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

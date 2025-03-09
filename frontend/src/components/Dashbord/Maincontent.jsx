@@ -20,6 +20,7 @@ import ManagePayments from "./page/ManagePayments"; // ✅ เพิ่มเม
 import PaymentReports from "./page/PaymentReports"; // ✅ เพิ่มเมนู Payment
 import TransactionHistory from "./page/TransactionHistory"; // ✅ เพิ่มเมนู Payment
 import TopUpRobuxManagement from "./page/TopUpRobuxManagement"; // ✅ เพิ่มเมนูจัดการ TopUp Robux
+import ManageAdmins from "./page/ManageAdmins"; // ✅ เพิ่มเมนู จัดการแอดมิน
 
 const MainContent = () => {
   const location = useLocation();
@@ -45,6 +46,9 @@ const MainContent = () => {
       {currentPath === "/dashboard/payment-reports" && <PaymentReports />} {/* ✅ เมนูใหม่ */}
       {currentPath === "/dashboard/transaction-history" && <TransactionHistory />} {/* ✅ เมนูใหม่ */}
       {currentPath === "/dashboard/topup-robux-management" && <TopUpRobuxManagement />} {/* ✅ เพิ่มเมนูใหม่ */}
+
+      {/* ✅ เพิ่มเมนู "จัดการแอดมิน" และ "จัดการบทบาท" */}
+      {currentPath === "/dashboard/manage-admins" && <ManageAdmins />}
 
       {/* Default Dashboard Content */}
       {currentPath === "/dashboard" && (
