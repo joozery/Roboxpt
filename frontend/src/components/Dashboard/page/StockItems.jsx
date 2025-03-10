@@ -155,7 +155,7 @@ const StockItems = () => {
   </select>
 
           <input type="number" placeholder="Price" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} className="p-2 border rounded-md" />
-          <input type="number" placeholder="Old Price (optional)" value={newItem.oldPrice} onChange={(e) => setNewItem({ ...newItem, oldPrice: e.target.value })} className="p-2 border rounded-md" />
+          
 
           {/* ✅ เปลี่ยนจาก Image URL เป็น File Upload */}
           <label className="flex items-center gap-2 cursor-pointer bg-gray-100 p-2 rounded-md border">
@@ -183,7 +183,7 @@ const StockItems = () => {
             <h3 className="text-lg font-bold">{item.name}</h3>
 
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-xl font-bold">rb{item.price}</span>
+              <span className="text-xl font-bold">฿{item.price}</span>
               {item.oldPrice && item.oldPrice !== "0.00" && (
                 <span className="text-red-400 line-through text-sm">rb{item.oldPrice}</span>
               )}
