@@ -82,6 +82,17 @@ const StockItems = () => {
     ? items.filter(item => item.category_id === selectedCategory)
     : items;
 
+    const handleDeleteItem = async (id) => {
+      if (!window.confirm("คุณต้องการลบสินค้านี้ใช่หรือไม่?")) return;
+  
+      try {
+        await axios.delete(`${API_ITEMS}/${id}`);
+        setItems(items.filter((item) => item.id !== id)); // ลบออกจาก state
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
+    };
+
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold text-purple-700">📦 Stock Items</h1>
@@ -178,7 +189,11 @@ const StockItems = () => {
               )}
             </div>
 
-            <button className="absolute bottom-2 right-2 bg-red-600 p-2 rounded-full text-white hover:bg-red-700">
+             {/* 🔹 ปุ่มลบสินค้า */}
+             <button
+              onClick={() => handleDeleteItem(item.id)}
+              className="absolute bottom-2 right-2 bg-red-600 p-2 rounded-full text-white hover:bg-red-700 transition"
+            >
               <FaTrash />
             </button>
           </div>
