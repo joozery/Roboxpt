@@ -1,14 +1,21 @@
 import React from "react";
-import CharacterSection from "./CharacterSection"; // Import ส่วนที่แยกมา
-
+import CharacterSection from "./CharacterSection";
+import bgImage from "../../assets/bgmian.png"; // ✅ เปลี่ยน path ให้ถูกต้อง
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#011f4b] via-[#03396c] to-[#005b96] overflow-hidden">
-      
-      {/* Gradient Overlay + Blur */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(0,91,150,0.4)_0%,_rgba(1,31,75,0.8)_100%)] backdrop-blur-md"></div>
-      
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Gradient Overlay + Blur (ช่วยทำให้ตัวอักษรชัดขึ้น) */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
       {/* Content */}
       <div className="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between relative z-10">
         
@@ -49,7 +56,7 @@ const HeroSection = () => {
 
         {/* Right Section - Guardian Character */}
         <div className="lg:w-1/2 flex justify-center mt-10 lg:mt-0 relative">
-          <CharacterSection /> {/* ตัวละครที่ดูเป็น Guardian */}
+          <CharacterSection />
           {/* Glow Effect */}
           <div className="absolute w-40 h-40 bg-[#005b96] opacity-30 blur-3xl"></div>
         </div>

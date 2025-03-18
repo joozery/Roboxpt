@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPercent, FaTrash, FaImage, FaPlus } from "react-icons/fa";
+import { FaPercent, FaTrash, FaImage, FaPlus, FaEdit } from "react-icons/fa";
 
 const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
 const API_CATEGORIES = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories";
@@ -11,6 +11,10 @@ const StockItems = () => {
   const [selectedCategory, setSelectedCategory] = useState(null); // ✅ ตัวแปรเก็บหมวดหมู่ที่เลือก
   const [newItem, setNewItem] = useState({ name: "", category: "", price: "", oldPrice: "", rarity: "Common", image: null });
   const [priceAdjustment, setPriceAdjustment] = useState(0);
+
+  // ✅ ตัวแปรสำหรับ Popup แก้ไขสินค้า
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
     fetchItems();
@@ -92,6 +96,28 @@ const StockItems = () => {
         console.error("Error deleting item:", error);
       }
     };
+
+    // ✅ เปิด Popup และโหลดข้อมูลสินค้าที่ต้องการแก้ไข
+  const openEditPopup = (item) => {
+    setEditItem(item);
+    setIsEditOpen(true);
+  };
+
+  // ✅ บันทึกข้อมูลที่แก้ไข
+  const handleSaveEdit = async () => {
+    if (!editItem.name || !editItem.price || !editItem.category_id) {
+      alert("กรุณากรอกข้อมูลให้ครบ!");
+      return;
+    }
+
+    try {
+      await axios.put(`${API_ITEMS}/${editItem.id}`, editItem);
+      fetchItems(); // โหลดข้อมูลใหม่
+      setIsEditOpen(false); // ปิด Popup
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -189,6 +215,14 @@ const StockItems = () => {
               )}
             </div>
 
+            {/* 🔹 ปุ่มแก้ไขสินค้า */}
+            <button
+              onClick={() => openEditPopup(item)}
+              className="absolute bottom-2 left-2 bg-blue-500 p-2 rounded-full text-white hover:bg-blue-600 transition"
+            >
+              <FaEdit />
+            </button>
+
              {/* 🔹 ปุ่มลบสินค้า */}
              <button
               onClick={() => handleDeleteItem(item.id)}
@@ -199,6 +233,66 @@ const StockItems = () => {
           </div>
         ))}
       </div>
+
+       {/* ✅ Popup แก้ไขสินค้า */}
+       {isEditOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-96">
+            <h2 className="text-lg font-bold text-gray-700 mb-4">✏️ Edit Item</h2>
+
+            {/* ฟอร์มแก้ไข */}
+            <input
+              type="text"
+              value={editItem.name}
+              onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+              className="w-full p-2 border rounded-md mb-2"
+              placeholder="Item Name"
+            />
+
+            <select
+              value={editItem.category_id}
+              onChange={(e) => setEditItem({ ...editItem, category_id: e.target.value })}
+              className="w-full p-2 border rounded-md mb-2"
+            >
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="number"
+              value={editItem.price}
+              onChange={(e) => setEditItem({ ...editItem, price: e.target.value })}
+              className="w-full p-2 border rounded-md mb-2"
+              placeholder="Price"
+            />
+
+            <select
+              value={editItem.rarity}
+              onChange={(e) => setEditItem({ ...editItem, rarity: e.target.value })}
+              className="w-full p-2 border rounded-md mb-2"
+            >
+              <option value="Common">Common</option>
+              <option value="Uncommon">Uncommon</option>
+              <option value="Rare">Rare</option>
+              <option value="Legendary">Legendary</option>
+              <option value="Mythical">Mythical</option>
+            </select>
+
+            {/* 🔹 ปุ่มบันทึกและปิด */}
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setIsEditOpen(false)} className="bg-gray-300 px-4 py-2 rounded-md">
+                Cancel
+              </button>
+              <button onClick={handleSaveEdit} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
