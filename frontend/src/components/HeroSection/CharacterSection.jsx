@@ -1,5 +1,5 @@
 import React from "react";
-import CharacterImage from "../../assets/character.png"; // Import รูปคาแรกเตอร์
+import CharacterImage from "../../assets/789.png"; // Import รูปคาแรกเตอร์
 import GhostImage from "../../assets/Ghost.webp"; // Import รูป Ghost
 import ShadowImage from "../../assets/Shadow.webp"; // Import รูป Shadow
 import PatternImage from "../../assets/pattern.webp"; // Import รูป Pattern
