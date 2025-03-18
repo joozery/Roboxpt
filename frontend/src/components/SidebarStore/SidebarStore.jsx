@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaFilter, FaAngleRight, FaRedo, FaThLarge } from "react-icons/fa";
+import { FaFilter, FaAngleRight, FaRedo, FaThLarge, FaIdBadge } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 const API_URL = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories"; // ✅ API URL

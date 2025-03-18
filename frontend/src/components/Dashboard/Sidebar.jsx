@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaHome, FaUserFriends, FaCreditCard, FaTools, FaThLarge, FaMap,
   FaMoneyCheckAlt, FaChartLine, FaHistory, FaMoneyBillWave, FaUsersCog,
-  FaCog, FaQuestionCircle, FaUser, FaExchangeAlt, FaSearch
+  FaCog, FaQuestionCircle, FaUser, FaExchangeAlt, FaSearch, FaIdBadge
 } from "react-icons/fa";
 import axios from "axios";
 
@@ -85,6 +85,12 @@ const Sidebar = () => {
            <NavLink to="/dashboard/map-game-category" className="sidebar-item">
             <FaMap size={18} />
             <span>Map Game Category</span>
+          </NavLink>
+
+          {/* 🔹 ✅ เพิ่มเมนู "Manage Roblox ID Accounts" */}
+          <NavLink to="/dashboard/manage-roblox-accounts" className="sidebar-item">
+            <FaIdBadge size={18} className="text-blue-500" />
+            <span>Manage Roblox ID Accounts</span>
           </NavLink>
 
           {/* 🔹 Payments */}
