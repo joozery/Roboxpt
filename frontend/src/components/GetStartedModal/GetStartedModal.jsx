@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import GmailIcon from "../../assets/logingmail.svg"; // นำเข้าไอคอน Gmail
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { UserContext } from "../../context/UserContext"; // ✅ ดึง Context มาใช้
 
 const GetStartedModal = ({ isOpen, onClose }) => {
-  const [isLogin, setIsLogin] = useState(false); // State เพื่อสลับ Login / Register
+  const [isLogin, setIsLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { setUser } = useContext(UserContext); // ✅ ดึง setUser จาก Context
 
   if (!isOpen) return null;
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const token = credentialResponse.credential;
+      const res = await axios.post("https://serverpt-6497ec45bb3e.herokuapp.com/api/auth/google-login", {
+        token,
+      });
+
+      console.log("✅ Login Success:", res.data);
+
+      // ✅ เก็บ token และ user info
+      localStorage.setItem("userToken", res.data.token);
+      localStorage.setItem("userInfo", JSON.stringify(res.data.user));
+
+      setUser(res.data.user); // ✅ อัปเดต Context เพื่อให้ Navbar แสดงชื่อผู้ใช้
+      onClose(); // ✅ ปิด modal
+    } catch (error) {
+      console.error("❌ Login Error:", error);
+    }
+  };
 
   return (
     <div 
@@ -17,42 +40,31 @@ const GetStartedModal = ({ isOpen, onClose }) => {
         className="bg-[#0f172a] text-white p-6 rounded-lg w-[400px] shadow-lg relative transition-transform transform scale-95 hover:scale-100"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ปุ่มปิด Modal */}
         <button className="absolute top-3 right-3 text-gray-400 hover:text-white" onClick={onClose}>
           &times;
         </button>
 
-        {/* Header */}
         <h2 className="text-2xl font-bold mb-2">
           {isLogin ? "Welcome Back!" : "Get Started!"}
         </h2>
         <p className="text-gray-400 text-sm mb-4">
           {isLogin ? (
-            <>
-              Don't have an account?{" "}
-              <button 
-                onClick={() => setIsLogin(false)} 
-                className="text-[#005b96] hover:underline"
-              >
+            <>Don't have an account?{" "}
+              <button onClick={() => setIsLogin(false)} className="text-[#005b96] hover:underline">
                 Register Here.
               </button>
             </>
           ) : (
-            <>
-              Already have an account?{" "}
-              <button 
-                onClick={() => setIsLogin(true)} 
-                className="text-[#005b96] hover:underline"
-              >
+            <>Already have an account?{" "}
+              <button onClick={() => setIsLogin(true)} className="text-[#005b96] hover:underline">
                 Login Here.
               </button>
             </>
           )}
         </p>
 
-        {/* Form */}
         <form className="space-y-4">
-          {!isLogin && ( // แสดง Username เฉพาะ Register เท่านั้น
+          {!isLogin && (
             <div>
               <label className="text-sm">Username</label>
               <input 
@@ -102,17 +114,18 @@ const GetStartedModal = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Submit Button */}
           <button className="w-full bg-[#005b96] hover:bg-[#03396c] p-3 rounded-md text-white font-semibold transition">
             {isLogin ? "Log In →" : "Get Started →"}
           </button>
 
-          {/* Continue with Google */}
+          {/* Google Login */}
           <div className="text-center text-gray-400 text-sm mt-4">or continue with</div>
-          <button className="w-full bg-[#1e293b] hover:bg-[#2d3c56] p-3 rounded-md text-gray-300 mt-2 flex items-center justify-center">
-          <img src={GmailIcon} alt="Google Login" className="w-5 h-5 mr-2" />
-            {isLogin ? "Log In with Google" : "Sign Up with Google"}
-          </button>
+          <div className="mt-2 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => console.log("❌ Google Login Failed")}
+            />
+          </div>
         </form>
       </div>
     </div>

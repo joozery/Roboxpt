@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+
+import { UserContext } from "./context/UserContext"; // ✅ import มาใช้
+
 import Navbar from "./components/Navbar/Navbar";
 import LiveChat from "./components/LiveChat/LiveChat";
 
@@ -59,48 +62,58 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        {/* ✅ เส้นทางของ Dashboard */}
-        <Route path="/dashboard/login" element={<LoginAdmin />} />
-        <Route 
-          path="/dashboard/*" 
-          element={
-            <ProtectedRoute>
-              <Dashbord />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Overview />} />
-          <Route path="overview" element={<Overview />} />
-          <Route path="personal" element={<Personal />} />
-          <Route path="use-cases" element={<UseCases />} />
-          <Route path="chat-templates" element={<ChatTemplates />} />
-          <Route path="ai-voices" element={<AIVoices />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="subscriptions" element={<Subscriptions />} />
-          <Route path="marketing" element={<Marketing />} />
-          <Route path="menus" element={<Menus />} />
-          <Route path="website-setup" element={<WebsiteSetup />} />
-          <Route path="media-manager" element={<MediaManager />} />
-          <Route path="support-tickets" element={<SupportTickets />} />
-          <Route path="tools" element={<Tools />} />
-          <Route path="stock-items" element={<StockItems />} />
-          <Route path="map-game-category" element={<MapGameCategory />} />
-          <Route path="topup-robux-management" element={<TopUpRobuxManagement />} />
-          <Route path="manage-payments" element={<ManagePayments />} />
-          <Route path="payment-reports" element={<PaymentReports />} />
-          <Route path="transaction-history" element={<TransactionHistory />} />
-          <Route path="manage-admins" element={<ManageAdmins />} />
-        </Route>
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("userInfo");
+    return stored ? JSON.parse(stored) : null;
+  });
 
-        {/* ✅ เส้นทางของเว็บไซต์หลัก */}
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/store" element={<Layout><Store /></Layout>} />
-        <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} />
-      </Routes>
-    </Router>
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      <Router>
+        <Routes>
+          {/* ✅ เส้นทางของ Dashboard */}
+          <Route path="/dashboard/login" element={<LoginAdmin />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <Dashbord />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Overview />} />
+            <Route path="overview" element={<Overview />} />
+            <Route path="personal" element={<Personal />} />
+            <Route path="use-cases" element={<UseCases />} />
+            <Route path="chat-templates" element={<ChatTemplates />} />
+            <Route path="ai-voices" element={<AIVoices />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="subscriptions" element={<Subscriptions />} />
+            <Route path="marketing" element={<Marketing />} />
+            <Route path="menus" element={<Menus />} />
+            <Route path="website-setup" element={<WebsiteSetup />} />
+            <Route path="media-manager" element={<MediaManager />} />
+            <Route path="support-tickets" element={<SupportTickets />} />
+            <Route path="tools" element={<Tools />} />
+            <Route path="stock-items" element={<StockItems />} />
+            <Route path="map-game-category" element={<MapGameCategory />} />
+            <Route
+              path="topup-robux-management"
+              element={<TopUpRobuxManagement />}
+            />
+            <Route path="manage-payments" element={<ManagePayments />} />
+            <Route path="payment-reports" element={<PaymentReports />} />
+            <Route path="transaction-history" element={<TransactionHistory />} />
+            <Route path="manage-admins" element={<ManageAdmins />} />
+          </Route>
+
+          {/* ✅ เส้นทางของเว็บไซต์หลัก */}
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/store" element={<Layout><Store /></Layout>} />
+          <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} />
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
