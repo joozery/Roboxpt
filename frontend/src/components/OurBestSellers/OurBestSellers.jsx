@@ -1,111 +1,81 @@
-import React from "react";
+// src/components/OurBestSellers.jsx
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-// Example product data
-const products = [
-  {
-    name: "Blox Fruits",
-    price: "฿404.43",
-    originalPrice: "฿478.03",
-    image: "path/to/blox-fruits-image.jpg", // replace with actual image path
-    type: "Legendary",
-  },
-  {
-    name: "Love",
-    price: "฿404.43",
-    originalPrice: "฿478.03",
-    image: "path/to/love-image.jpg", // replace with actual image path
-    type: "Legendary",
-  },
-  {
-    name: "500k Money",
-    price: "฿478.03",
-    originalPrice: "฿588.43",
-    image: "path/to/money-image.jpg", // replace with actual image path
-    type: "Other",
-  },
-  {
-    name: "300k Money",
-    price: "฿330.83",
-    originalPrice: "฿404.43",
-    image: "path/to/money-image2.jpg", // replace with actual image path
-    type: "Other",
-  },
-  {
-    name: "Pain",
-    price: "฿476.55",
-    originalPrice: "฿550.15",
-    image: "path/to/pain-image.jpg", // replace with actual image path
-    type: "Legendary",
-  },
-  {
-    name: "Barrier",
-    price: "฿275.63",
-    originalPrice: "฿386.03",
-    image: "path/to/barrier-image.jpg", // replace with actual image path
-    type: "Rare",
-  },
-  // Add other products...
-];
+const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
 
-// Individual Product Card Component
-const ProductCard = ({ product }) => {
-  return (
-    <div className="relative bg-gray-800 p-4 rounded-lg shadow-lg text-center transform transition-all duration-300 hover:scale-105">
-      {/* Product Type Label */}
-      <span className={`text-pink-400 font-bold text-sm absolute top-2 left-2 bg-pink-900 px-2 py-1 rounded-full`}>
-        {product.type}
-      </span>
-
-      {/* Product Image */}
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-24 mx-auto my-4"
-      />
-
-      {/* Product Details */}
-      <p className="text-gray-400 text-xs">Permanent Fruit</p>
-      <p className="text-white font-bold">{product.name}</p>
-      <p className="text-green-400 font-bold">{product.price}</p>
-      <p className="text-gray-400 line-through text-sm">{product.originalPrice}</p>
-
-      {/* Add to Cart Button */}
-      <button className="absolute bottom-2 right-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 shadow-md">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 3h2l.4 2M7 13h10l1.4-7H6.4m-3.4 7h1m4 0h10m-10 4a2 2 0 104 0m-4 0a2 2 0 11-4 0"
-          />
-        </svg>
-      </button>
-    </div>
-  );
+const rarityColors = {
+  Common: "bg-gray-400 text-gray-900",
+  Rare: "bg-blue-500 text-white",
+  Epic: "bg-pink-500 text-white",
+  Legendary: "bg-yellow-400 text-black",
+  Mythical: "bg-red-500 text-white",
 };
 
-// Our Best Sellers Section
 const OurBestSellers = () => {
-  return (
-    <section className="bg-gray-900 text-white py-16 px-8">
-      <div className="container mx-auto">
-        <h2 className="text-3xl font-bold mb-6 text-center text-blue-500">
-          Our Best Sellers
-        </h2>
-        <p className="text-gray-400 text-center mb-12">
-          Get the top items from your favorite Roblox games at the best prices!
-          Check out our most popular deals below.
-        </p>
+  const [items, setItems] = useState([]);
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <ProductCard key={index} product={product} />
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(API_ITEMS);
+      setItems(response.data.slice(0, 10)); // limit to 10 items
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
+  return (
+    <section className="bg-[#0f172a] py-16 text-white font-['Prompt']">
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <h2 className="text-3xl font-bold mb-10">
+          Our <span className="text-[#59C9FF]">Best Sellers</span>
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="relative bg-[#131427] rounded-2xl px-4 py-6 text-left shadow-md hover:scale-[1.02] transition-all border border-[#202245]"
+            >
+              <div
+                className={`absolute top-2 left-2 text-xs px-2 py-1 rounded-full font-semibold ${
+                  rarityColors[item.rarity] || "bg-gray-600 text-white"
+                }`}
+              >
+                {item.rarity}
+              </div>
+
+              <img
+                src={item.image_url}
+                alt={item.name}
+                className="w-24 h-24 object-contain mx-auto mb-4"
+              />
+
+              <div className="text-center">
+                <h3 className="text-white font-bold text-lg leading-tight">
+                  {item.name}
+                </h3>
+
+                <div className="text-right mt-1">
+                  <p className="text-red-400 text-sm line-through">
+                    ฿{parseFloat(item.oldPrice || 0).toFixed(2)}
+                  </p>
+                  <p className="text-lg font-bold text-white">
+                    ฿{parseFloat(item.price).toFixed(2)}
+                  </p>
+                </div>
+
+                <button className="w-full bg-blue-500 hover:bg-blue-600 transition text-white font-semibold py-1.5 mt-3 rounded-lg">
+                  หยิบใส่ตะกร้า
+                </button>
+
+                <p className="text-xs text-gray-400 mt-2">ขายไปแล้ว 123 ชิ้น</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

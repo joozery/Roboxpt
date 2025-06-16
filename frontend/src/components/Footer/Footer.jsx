@@ -1,85 +1,73 @@
 import React from "react";
-import BackgroundImage from "../../assets/Coverfooter.jpg"; // Import the background image
+import {
+  FaTiktok,
+  FaDiscord,
+  FaYoutube
+} from "react-icons/fa";
+import {
+  SiMastercard,
+  SiPaypal,
+  SiVisa
+} from "react-icons/si";
+import logo from "../../assets/logo2.png";
 
 const Footer = () => {
   return (
-    <footer
-      className="relative bg-gray-900 text-gray-400 py-10"
-      style={{
-        backgroundImage: `url(${BackgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black opacity-60"></div>
-
-      <div className="relative container mx-auto px-6 lg:px-20">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
-          {/* Logo and Description */}
-          <div className="lg:w-1/3 z-10">
-            <h2 className="text-white text-2xl font-bold mb-2">PTSTOCK</h2>
-            <p className="mb-4">
-              BloxyFruits is the top marketplace to buy rare and awesome Roblox
-              items. With lightning-fast delivery and secure payments, we've
-              helped thousands of gamers get the items they love.
-            </p>
-            <p>
-              BloxyFruits is not affiliated with Roblox Corporation. All in-game
-              assets are the property of their respective owners.
+    <footer className="font-['Prompt']">
+      {/* Top Section */}
+      <div className="bg-[#151733] text-white px-6 py-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+          {/* Logo & Description */}
+          <div className="max-w-md">
+            <div className="flex items-center gap-3 mb-3">
+              <img src={logo} alt="logo" className="w-10 h-10" />
+              <h2 className="text-2xl font-bold" style={{ color: "#59C9FF" }}>
+  PTSTOCK
+</h2>
+            </div>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              PT Stock is the top marketplace to buy rare and awesome Roblox items.
+              With lightning-fast delivery and secure payments, we've helped thousands
+              of gamers get the items they love.
             </p>
           </div>
 
-          {/* Navigation Links */}
-          <div className="lg:w-1/3 grid grid-cols-3 gap-6 mt-8 lg:mt-0 z-10">
+          {/* Menu Sections */}
+          <div className="grid grid-cols-3 gap-10 text-sm">
             <div>
-              <h3 className="text-white font-semibold mb-2">Social Media</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white">Discord</a></li>
-                <li><a href="#" className="hover:text-white">TikTok</a></li>
-                <li><a href="#" className="hover:text-white">YouTube</a></li>
+              <h3 className="font-semibold text-white mb-3">Social Media</h3>
+              <div className="flex gap-3 text-white text-xl">
+                <FaTiktok className="bg-blue-500 p-1 rounded-md w-7 h-7" />
+                <FaDiscord className="bg-blue-500 p-1 rounded-md w-7 h-7" />
+                <FaYoutube className="bg-blue-500 p-1 rounded-md w-7 h-7" />
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-white mb-3">Support</h3>
+              <ul className="text-gray-300 space-y-1">
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Live Chat</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="text-white font-semibold mb-2">Support</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white">FAQ</a></li>
-                <li><a href="#" className="hover:text-white">Live Chat</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-2">Legal</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+              <h3 className="font-semibold text-white mb-3">Legal</h3>
+              <ul className="text-gray-300 space-y-1">
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Privacy Policy</a></li>
               </ul>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Section */}
-        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center border-t border-gray-700 pt-6">
-          <p className="mb-4 lg:mb-0">
-            BloxyFruit © {new Date().getFullYear()}, All Rights Reserved
-          </p>
-          <div className="flex space-x-4">
-            <img
-              src="https://via.placeholder.com/40x24"
-              alt="MasterCard"
-              className="h-6"
-            />
-            <img
-              src="https://via.placeholder.com/40x24"
-              alt="Visa"
-              className="h-6"
-            />
-            <img
-              src="https://via.placeholder.com/40x24"
-              alt="PayPal"
-              className="h-6"
-            />
-          </div>
+      {/* Bottom Bar */}
+      <div className="bg-gradient-to-r from-[#1e3c72] via-[#2a5298] to-[#1e3c72] px-6 py-4 text-white text-sm flex flex-col md:flex-row justify-between items-center">
+        <span className="text-xs">PTStock © 2025, All Rights Reserved</span>
+        <div className="flex items-center gap-6 text-2xl mt-2 md:mt-0">
+          <SiMastercard />
+          <SiPaypal />
+          <SiVisa />
         </div>
       </div>
     </footer>
