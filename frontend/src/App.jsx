@@ -12,6 +12,7 @@ import Store from "./pages/Store";
 import TopupRobux from "./pages/Topuprobux";
 import Tutorial from "./pages/Tutorial"; // ✅ 
 import TopupPage from "./pages/TopupPage";
+import Support from "./pages/Support"; // ✅
 
 
 
@@ -117,6 +118,7 @@ function App() {
           <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} />
           <Route path="/tutorial" element={<Layout><Tutorial /></Layout>} />
           <Route path="/topup" element={<Layout><TopupPage /></Layout>} />
+          <Route path="/support" element={<Layout><Support /></Layout>} />  
 
         </Routes>
       </Router>
