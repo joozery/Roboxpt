@@ -14,7 +14,7 @@ import {
   FaCreditCard,
 } from "react-icons/fa";
 import { MdShield } from "react-icons/md";
-import logo from "../../assets/logo2.png";
+import logo from "../../assets/logo3.png";
 import GetStartedModal from "../GetStartedModal/GetStartedModal";
 import { UserContext } from "../../context/UserContext";
 
@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <>
       <div className="bg-[#191b31] text-white fixed top-0 left-0 w-full z-50 py-3 border-b border-blue-500 shadow-sm font-['Prompt']">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4">
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4">
           {/* ✅ Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img src={logo} alt="Logo" className="w-10 h-10" />
@@ -39,19 +39,34 @@ const Navbar = () => {
 
           {/* ✅ Center Menu */}
           <div className="hidden md:flex gap-6 text-sm">
-            <Link to="/topuprobux" className="flex items-center gap-1 hover:text-blue-400">
-              <FaMoneyBillWave /> Robux
+            <Link
+              to="/p2p"
+              className="flex items-center gap-1 hover:text-blue-400"
+            >
+              <FaMoneyBillWave /> P2P
             </Link>
-            <Link to="/store" className="flex items-center gap-1 hover:text-blue-400">
+            <Link
+              to="/store"
+              className="flex items-center gap-1 hover:text-blue-400"
+            >
               <FaStore /> Store
             </Link>
-            <Link to="/support" className="flex items-center gap-1 hover:text-blue-400">
+            <Link
+              to="/support"
+              className="flex items-center gap-1 hover:text-blue-400"
+            >
               <FaHeadset /> Support
             </Link>
-            <Link to="/tutorial" className="flex items-center gap-1 hover:text-blue-400">
+            <Link
+              to="/tutorial"
+              className="flex items-center gap-1 hover:text-blue-400"
+            >
               <FaBook /> Tutorial
             </Link>
-            <Link to="/topup" className="flex items-center gap-1 hover:text-blue-400">
+            <Link
+              to="/topup"
+              className="flex items-center gap-1 hover:text-blue-400"
+            >
               <FaCreditCard /> Top Up
             </Link>
           </div>
@@ -95,7 +110,10 @@ const Navbar = () => {
       </div>
 
       {/* ✅ Modal */}
-      <GetStartedModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+      <GetStartedModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   );
 };

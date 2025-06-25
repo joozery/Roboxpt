@@ -10,6 +10,10 @@ import LiveChat from "./components/LiveChat/LiveChat";
 import Home from "./pages/Home";
 import Store from "./pages/Store";
 import TopupRobux from "./pages/Topuprobux";
+import Tutorial from "./pages/Tutorial"; // ✅ 
+import TopupPage from "./pages/TopupPage";
+
+
 
 // 📌 Import หน้า Dashboard
 import Dashbord from "./components/Dashboard/Dashbord";
@@ -111,6 +115,9 @@ function App() {
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/store" element={<Layout><Store /></Layout>} />
           <Route path="/topuprobux" element={<Layout><TopupRobux /></Layout>} />
+          <Route path="/tutorial" element={<Layout><Tutorial /></Layout>} />
+          <Route path="/topup" element={<Layout><TopupPage /></Layout>} />
+
         </Routes>
       </Router>
     </UserContext.Provider>
