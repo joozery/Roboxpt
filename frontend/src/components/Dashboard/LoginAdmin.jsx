@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiMail, FiLock } from "react-icons/fi";
-import logo from "../../assets/logo.png"; // ✅ นำเข้าโลโก้เกม
+import logo from "../../assets/logo3.png"; // ✅ นำเข้าโลโก้เกม
 import bgImage from "../../assets/pattern.webp"; // ✅ นำเข้าภาพพื้นหลังแนวเกมมิ่ง
 
 const API_LOGIN = `${import.meta.env.VITE_API_URL}/api/admin/login`; // ✅ ใช้ API จริง
