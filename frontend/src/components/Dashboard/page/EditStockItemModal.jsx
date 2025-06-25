@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaSave, FaTimes, FaImage } from "react-icons/fa";
 
-const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
-const API_CATEGORIES = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories";
+const API_ITEMS = `${import.meta.env.VITE_API_URL}/api/items`;
+const API_CATEGORIES = `${import.meta.env.VITE_API_URL}/api/categories`;
+
 
 const EditStockItemModal = ({ item, onClose, onUpdated }) => {
   const [name, setName] = useState(item.name);

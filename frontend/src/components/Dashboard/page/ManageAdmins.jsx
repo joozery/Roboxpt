@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_ADMINS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/admin/all";
-const API_ADD_ADMIN = "https://serverpt-6497ec45bb3e.herokuapp.com/api/admin/register";
-const API_DELETE_ADMIN = "https://serverpt-6497ec45bb3e.herokuapp.com/api/admin/delete";
+const API_ADMINS = `${import.meta.env.VITE_API_URL}/api/admin/all`;
+const API_ADD_ADMIN = `${import.meta.env.VITE_API_URL}/api/admin/register`;
+const API_DELETE_ADMIN = `${import.meta.env.VITE_API_URL}/api/admin/delete`;
+
 
 const roles = ["Admin", "Super Admin", "Editor"]; // 🔹 กำหนด Role ที่เลือกได้
 

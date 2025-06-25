@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaPlus, FaTrash, FaEdit, FaGamepad, FaSearch, FaImage } from "react-icons/fa";
 
-const API_URL = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories"; // ✅ URL API บน Heroku
+const API_URL = `${import.meta.env.VITE_API_URL}/api/categories`; // ✅ URL API บน Heroku
 
 const MapGameCategory = () => {
   const [categories, setCategories] = useState([]);

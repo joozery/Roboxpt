@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "r
 import { UserContext } from "./context/UserContext"; // ✅ import มาใช้
 
 import Navbar from "./components/Navbar/Navbar";
-import LiveChat from "./components/LiveChat/LiveChat";
+
 
 // 📌 Import หน้าเว็บไซต์หลัก
 import Home from "./pages/Home";
@@ -55,7 +55,6 @@ const Layout = ({ children }) => {
     <div className="flex">
       {!isDashboard && <Navbar />}
       <div className="flex-1">{children}</div>
-      <LiveChat />
     </div>
   );
 };
