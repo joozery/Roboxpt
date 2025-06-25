@@ -3,7 +3,8 @@ import axios from "axios";
 import { FaShoppingCart, FaFire, FaFilter } from "react-icons/fa";
 import { ThreeDots } from "@agney/react-loading"; // ✅ loading effect
 
-const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
+const API_ITEMS = `${import.meta.env.VITE_API_URL}/api/items`;
+
 
 const rarityColors = {
   Common: "bg-gray-500",

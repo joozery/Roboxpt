@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_ITEMS = "https://serverpt-6497ec45bb3e.herokuapp.com/api/items";
+const API_ITEMS = `${import.meta.env.VITE_API_URL}/api/items`;
+
 
 const rarityColors = {
   Common: "bg-gray-400 text-gray-900",

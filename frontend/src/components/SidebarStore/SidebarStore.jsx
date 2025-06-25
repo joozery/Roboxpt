@@ -3,7 +3,8 @@ import axios from "axios";
 import { FaFilter, FaAngleRight, FaRedo, FaThLarge } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
-const API_URL = "https://serverpt-6497ec45bb3e.herokuapp.com/api/categories";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/categories`;
+
 
 const SidebarStore = () => {
   const [games, setGames] = useState([]);

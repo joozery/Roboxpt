@@ -30,14 +30,14 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[#0f172a] text-white fixed top-0 left-0 w-full z-50 py-2 px-6 border-b-2 border-blue-500 shadow-md font-['Prompt']">
-        <div className="flex items-center justify-between max-w-[1300px] mx-auto">
-          {/* Logo */}
+      <div className="bg-[#191b31] text-white fixed top-0 left-0 w-full z-50 py-3 border-b border-blue-500 shadow-sm font-['Prompt']">
+      <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4">
+          {/* ✅ Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img src={logo} alt="Logo" className="w-10 h-10" />
           </Link>
 
-          {/* Center Menu */}
+          {/* ✅ Center Menu */}
           <div className="hidden md:flex gap-6 text-sm">
             <Link to="/topuprobux" className="flex items-center gap-1 hover:text-blue-400">
               <FaMoneyBillWave /> Robux
@@ -56,23 +56,16 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Right Menu */}
-          <div className="flex items-center gap-4">
-            <button className="hover:text-blue-400">
-              <FaDiscord className="text-lg" />
-            </button>
-            <button className="hover:text-blue-400">
-              <MdShield className="text-lg" />
-            </button>
-            <button className="hover:text-blue-400">
-              <FaShoppingCart className="text-lg" />
-            </button>
+          {/* ✅ Right Side: Icons + User Info */}
+          <div className="flex items-center gap-4 text-sm">
+            <FaDiscord className="text-lg hover:text-blue-400 cursor-pointer" />
+            <MdShield className="text-lg hover:text-blue-400 cursor-pointer" />
+            <FaShoppingCart className="text-lg hover:text-blue-400 cursor-pointer" />
 
-            {/* User Info */}
             {user ? (
               <div className="flex items-start gap-2">
                 <FaUserCircle className="text-white text-xl mt-1" />
-                <div className="text-sm leading-tight">
+                <div className="leading-tight text-left">
                   <div className="font-semibold">{user.name}</div>
                   <div className="text-xs text-gray-300">
                     Balance{" "}
@@ -90,8 +83,8 @@ const Navbar = () => {
               </div>
             ) : (
               <button
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:from-blue-600 hover:to-purple-700"
                 onClick={() => setModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:from-blue-600 hover:to-purple-700 text-xs"
               >
                 <span>Get Started!</span>
                 <FaArrowRight className="w-4 h-4" />
@@ -101,7 +94,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Login/Register Modal */}
+      {/* ✅ Modal */}
       <GetStartedModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>
   );

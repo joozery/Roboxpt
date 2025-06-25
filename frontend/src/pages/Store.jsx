@@ -5,7 +5,7 @@ import MainContent from "../components/MainContent/MainContent";
 
 const Store = () => {
   return (
-    <div className="bg-[#0f172a] min-h-screen text-white">
+    <div className="bg-[#1c1327] min-h-screen text-white">
       {/* Navbar */}
       <Navbar />
 
