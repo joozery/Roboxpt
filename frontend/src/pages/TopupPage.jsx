@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer/Footer";
 
-import mastercard from "../assets/icons/mastercard.png";
+import mastercard from '../assets/icons/mastercard.png';
 import truemoney from "../assets/icons/truemoney.png";
 import promptpay from "../assets/icons/promptpay.png";
 import binance from "../assets/icons/binance.png";
