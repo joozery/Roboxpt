@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Footer from "../components/Footer/Footer";
+import MastercardForm from '../components/Topup/MastercardForm';
+import TrueMoneyForm from '../components/Topup/TrueMoneyForm';
+import PromptPayForm from '../components/Topup/PromptPayForm';
+import BinanceForm from '../components/Topup/BinanceForm';
+import { useNavigate } from "react-router-dom";
 
 import mastercard from '../assets/icons/mastercard.png';
 import truemoney from "../assets/icons/truemoney.png";
@@ -22,356 +27,285 @@ const TopupPage = () => {
   const totalWithTax = amount + amount * taxRate;
   const [truemoneyLink, setTruemoneyLink] = useState("");
   const [isLinkValid, setIsLinkValid] = useState(null); // null | true | false
+  const [accepted, setAccepted] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [showSlipModal, setShowSlipModal] = useState(false);
+  const [slipFile, setSlipFile] = useState(null);
+  const [slipSuccess, setSlipSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAcceptChange = (e) => setAccepted(e.target.checked);
+
+  const handleTopup = () => {
+    setLoading(true);
+    setError(null);
+    setSlipFile(null);
+    setSlipSuccess(false);
+    setShowSlipModal(false);
+    setTimeout(() => {
+      setLoading(false);
+      if (selectedMethod === "PromptPay" || selectedMethod === "Binance") {
+        setShowSlipModal(true);
+      } else {
+        setSuccess(true);
+      }
+    }, 1800);
+  };
+
+  const handleSlipUpload = (e) => {
+    const file = e.target.files[0];
+    setSlipFile(file);
+  };
+
+  const handleSubmitSlip = (e) => {
+    e.preventDefault();
+    if (!slipFile) return;
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSlipSuccess(true);
+    }, 1500);
+  };
+
+  const handleCloseModal = () => {
+    setSuccess(false);
+    setError(null);
+    setShowSlipModal(false);
+    setSlipFile(null);
+    setSlipSuccess(false);
+    navigate('/');
+  };
 
   return (
     <>
       <motion.div
         className="min-h-screen bg-[#0f1125] pt-24 pb-24 text-white font-['Prompt']"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
         {/* Header */}
-        <div className="text-center mb-8">
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <h1 className="text-3xl font-bold">Topup Point</h1>
           <p className="text-sm text-gray-400">
             Topup via Bank Transfer, Credit Card, Promptpay, Binance, etc.
           </p>
-        </div>
+          <div className="w-28 h-1 bg-blue-400 mt-2 mx-auto rounded-full" />
+        </motion.div>
 
         {/* Payment Methods */}
-        <div className="flex justify-center gap-4 flex-wrap mb-10">
+        <motion.div
+          className="flex justify-center gap-4 flex-wrap mb-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
           {paymentMethods.map((method, index) => (
-            <div key={index}>
+            <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               {method.icon ? (
-                <img
+                <motion.img
                   src={method.icon}
                   alt={method.name}
                   onClick={() => setSelectedMethod(method.name)}
-                  className={`w-20 h-auto cursor-pointer hover:scale-105 transition-transform ${
+                  className={`w-20 h-auto cursor-pointer transition-transform ${
                     selectedMethod === method.name
                       ? "ring-2 ring-blue-400 rounded"
                       : ""
                   }`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: 0.1 * index }}
                 />
               ) : (
-                <div className="bg-gray-800 text-gray-400 px-4 py-2 rounded-md">
+                <motion.div
+                  className="bg-gray-800 text-gray-400 px-4 py-2 rounded-md"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: 0.1 * index }}
+                >
                   {method.label}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Payment Form */}
-        <div className="max-w-xl mx-auto bg-[#191b31] p-6 rounded-lg shadow-lg space-y-5">
-          {selectedMethod === "TrueMoney" ? (
-            <>
-              <div className="grid grid-cols-2 gap-6">
-                {/* Left: Link Input + Check */}
-                <div className="space-y-3">
-                  <div>
-                    <label className="text-sm block">Truewallet Link</label>
-                    <input
-                      type="text"
-                      placeholder="https://truemoneygift..."
-                      value={truemoneyLink}
-                      onChange={(e) => setTruemoneyLink(e.target.value)}
-                      className="w-full px-4 py-2 rounded bg-[#1e213b] text-white"
-                    />
-                  </div>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md"
-                    onClick={() => {
-                      // แก้ให้เชื่อม API จริงในอนาคต
-                      if (truemoneyLink.includes("truemoney")) {
-                        setIsLinkValid(true);
-                      } else {
-                        setIsLinkValid(false);
-                      }
-                    }}
-                  >
-                    Check
-                  </button>
-
-                  {/* Status */}
-                  {isLinkValid === true && (
-                    <p className="text-green-400 text-sm">
-                      Link is valid (10,000.00฿)
-                    </p>
-                  )}
-                  {isLinkValid === false && (
-                    <p className="text-red-400 text-sm">
-                      Link is invalid, try another
-                    </p>
-                  )}
-
-                  <p className="text-xs text-gray-400 mt-2">
-                    ** Please enter same amount as system show
-                  </p>
-                </div>
-
-                {/* Right: Amount Summary */}
-                <div className="space-y-3 text-sm text-right text-gray-300">
-                  <div>
-                    <label className="block mb-1">
-                      Enter the amount of points
-                    </label>
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(Number(e.target.value))}
-                      className="w-full px-4 py-2 rounded bg-[#1e213b] text-white text-right"
-                    />
-                  </div>
-                  <p>
-                    USD ($) Price:{" "}
-                    <span className="text-red-400">33.67 THB</span>
-                  </p>
-                  <p className="text-white">
-                    Total: <strong>{totalWithTax.toFixed(2)} THB</strong>{" "}
-                    <span className="text-xs text-gray-400">
-                      (Tax 7% included)
-                    </span>
-                  </p>
-                  <p>
-                    You will receive{" "}
-                    <strong>{amount.toLocaleString()} pts</strong>
-                  </p>
-                </div>
-              </div>
-
-              {/* Terms & Confirm */}
-              <div className="text-xs text-gray-400 mt-3">
-                <p className="mb-1 font-semibold text-white">
-                  Term of service (สรุปย่อ)
-                </p>
-                <p>
-                  การเติมเงินถือเป็นการยืนยันการสั่งซื้อและไม่สามารถขอคืนเงินได้ในทุกกรณี
-                  กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนทำรายการ หากระบบไม่อัปเดตใน
-                  5-15 นาที กรุณาติดต่อทีมงาน
-                </p>
-              </div>
-
-              <div className="mt-2">
-                <label className="inline-flex items-center">
-                  <input type="checkbox" className="mr-2" defaultChecked />
-                  ยอมรับเงื่อนไขในการทำรายการ
-                </label>
-              </div>
-
-              <div className="text-right">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md">
-                  Cash out
-                </button>
-              </div>
-            </>
-          ) : selectedMethod === "PromptPay" ? (
-            <>
-              {/* PromptPay QR Payment */}
-              <div className="flex items-center gap-4">
-                <div className="flex flex-col items-center">
-                  <img
-                    src="https://promptpay.io/qr-demo.png"
-                    alt="PromptPay QR"
-                    className="w-40 h-40 rounded"
-                  />
-                  <p className="text-xs text-gray-300 mt-2">
-                    Time left : 15 m 05 s
-                  </p>
-                  <p className="text-xs text-red-400">
-                    Please send before time out !
-                  </p>
-                </div>
-
-                <div className="flex-1 space-y-3">
-                  <label className="text-sm block">Amount to topup</label>
-                  <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    className="w-full px-4 py-2 rounded bg-[#1e213b] text-white"
-                  />
-                  <div className="text-sm text-right text-gray-300">
-                    <p>
-                      USD ($) Price:{" "}
-                      <span className="text-red-400">33.67 THB</span>
-                    </p>
-                    <p className="text-white">
-                      Total: <strong>{totalWithTax.toFixed(2)} THB</strong>{" "}
-                      <span className="text-xs text-gray-400">
-                        (Tax 7% included)
-                      </span>
-                    </p>
-                    <p>
-                      You will receive{" "}
-                      <strong>{amount.toLocaleString()} pts</strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs text-gray-400 mt-3">
-                <p className="mb-1 font-semibold text-white">
-                  Term of service (สรุปย่อ)
-                </p>
-                <p>
-                  การเติมเงินถือเป็นการยืนยันการสั่งซื้อและไม่สามารถขอคืนเงินได้ในทุกกรณี
-                  กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนทำรายการ หากระบบไม่อัปเดตใน
-                  5-15 นาที กรุณาติดต่อทีมงาน
-                </p>
-              </div>
-
-              <div className="mt-2">
-                <label className="inline-flex items-center">
-                  <input type="checkbox" className="mr-2" defaultChecked />
-                  ยอมรับเงื่อนไขในการทำรายการ
-                </label>
-              </div>
-
-              <div className="text-right">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md">
-                  Cash out
-                </button>
-              </div>
-            </>
-          ) : selectedMethod === "Binance" ? (
-            <>
-              {/* Binance Payment */}
-              <div>
-                <label className="text-sm block mb-1">TxID Link</label>
-                <input
-                  type="text"
-                  value="https://bscscan.com/ex43x"
-                  readOnly
-                  className="w-full px-4 py-2 rounded bg-[#1e213b] text-white"
+        <div className="max-w-xl mx-auto bg-[#191b31] p-6 rounded-lg shadow-lg space-y-5 min-h-[420px] font-['Prompt']">
+          <AnimatePresence mode="wait">
+            {selectedMethod === "TrueMoney" && (
+              <motion.div
+                key="truemoney"
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4 }}
+              >
+                <TrueMoneyForm
+                  amount={amount}
+                  setAmount={setAmount}
+                  totalWithTax={totalWithTax}
+                  truemoneyLink={truemoneyLink}
+                  setTruemoneyLink={setTruemoneyLink}
+                  isLinkValid={isLinkValid}
+                  setIsLinkValid={setIsLinkValid}
+                  accepted={accepted}
+                  onAcceptChange={handleAcceptChange}
+                  onSubmit={handleTopup}
                 />
-              </div>
-              <div>
-                <label className="text-sm block mb-1">Amount to topup</label>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
-                  className="w-full px-4 py-2 rounded bg-[#1e213b] text-white"
+              </motion.div>
+            )}
+            {selectedMethod === "PromptPay" && (
+              <motion.div
+                key="promptpay"
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4 }}
+              >
+                <PromptPayForm
+                  amount={amount}
+                  setAmount={setAmount}
+                  totalWithTax={totalWithTax}
+                  accepted={accepted}
+                  onAcceptChange={handleAcceptChange}
+                  onSubmit={handleTopup}
                 />
-              </div>
-              <div className="text-right text-sm text-gray-300">
-                <p>
-                  USD ($) Price: <span className="text-red-400">23.67 THB</span>{" "}
-                  <span className="text-xs text-gray-400">
-                    (Price depend on Binance)
-                  </span>
-                </p>
-                <p className="mt-1 text-white">
-                  <strong>Total:</strong> {totalWithTax.toFixed(2)} THB{" "}
-                  <span className="text-xs text-gray-400">
-                    (Tax 7% included)
-                  </span>
-                </p>
-                <p>
-                  You will receive{" "}
-                  <strong>{amount.toLocaleString()} pts</strong>
-                </p>
-              </div>
-
-              <div className="text-xs text-gray-400 mt-3">
-                <p className="mb-1 font-semibold text-white">
-                  Term of service (สรุปย่อ)
-                </p>
-                <p>
-                  การเติมเงินถือเป็นการยืนยันการสั่งซื้อและไม่สามารถขอคืนเงินได้ในทุกกรณี
-                  กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนทำรายการ
-                  หากระบบไม่อัปเดตในเวลา 5-15 นาที กรุณาติดต่อทีมงาน
-                </p>
-              </div>
-
-              <div className="mt-2">
-                <label className="inline-flex items-center">
-                  <input type="checkbox" className="mr-2" defaultChecked />
-                  ยอมรับเงื่อนไขในการทำรายการ
-                </label>
-              </div>
-
-              <div className="text-right">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md">
-                  Cash out
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Mastercard / Default */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm">Credit Number</label>
-                  <input
-                    type="text"
-                    value="5270 4298 1234 6859"
-                    className="w-full mt-1 px-4 py-2 rounded bg-[#1e213b] text-white"
-                    readOnly
-                  />
-                </div>
-                <div className="flex items-center justify-end">
-                  <img src={mastercard} alt="Card" className="w-10" />
-                </div>
-                <div>
-                  <label className="text-sm">Exp Date</label>
-                  <input
-                    type="text"
-                    value="16/30"
-                    className="w-full mt-1 px-4 py-2 rounded bg-[#1e213b] text-white"
-                    readOnly
-                  />
-                </div>
-                <div>
-                  <label className="text-sm">CVC</label>
-                  <input
-                    type="text"
-                    value="452"
-                    className="w-full mt-1 px-4 py-2 rounded bg-[#1e213b] text-white"
-                    readOnly
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm">Amount to topup</label>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
-                  className="w-full mt-1 px-4 py-2 rounded bg-[#1e213b] text-white"
+              </motion.div>
+            )}
+            {selectedMethod === "Binance" && (
+              <motion.div
+                key="binance"
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4 }}
+              >
+                <BinanceForm
+                  amount={amount}
+                  setAmount={setAmount}
+                  totalWithTax={totalWithTax}
+                  accepted={accepted}
+                  onAcceptChange={handleAcceptChange}
+                  onSubmit={handleTopup}
                 />
-              </div>
-
-              <div className="text-right text-sm text-gray-300">
-                <p className="mt-1 text-white">
-                  Total: <strong>{totalWithTax.toLocaleString()} THB</strong>{" "}
-                  <span className="text-xs text-gray-400">
-                    (Tax 7% included)
-                  </span>
-                </p>
-                <p>
-                  You will receive{" "}
-                  <strong>{amount.toLocaleString()} pts</strong>
-                </p>
-              </div>
-
-              <div className="text-xs text-gray-400 mt-2">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                ยอมรับเงื่อนไขในการทำรายการนี้
-              </div>
-
-              <div className="text-right">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition">
-                  Cash out
-                </button>
-              </div>
-            </>
-          )}
+              </motion.div>
+            )}
+            {selectedMethod === "Mastercard" && (
+              <motion.div
+                key="mastercard"
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.4 }}
+              >
+                <MastercardForm
+                  amount={amount}
+                  setAmount={setAmount}
+                  totalWithTax={totalWithTax}
+                  accepted={accepted}
+                  onAcceptChange={handleAcceptChange}
+                  onSubmit={handleTopup}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
+
+      {/* Modal แสดงสถานะ */}
+      {(loading || success || error || showSlipModal) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 font-['Prompt']">
+          <motion.div
+            className="bg-[#191b31] text-white p-8 rounded-lg shadow-lg min-w-[320px] text-center"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+          >
+            {loading && (
+              <>
+                <div className="mb-4 flex justify-center">
+                  <svg className="animate-spin h-8 w-8 text-blue-400" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                </div>
+                <div className="text-lg font-semibold mb-2">กำลังดำเนินการ...</div>
+                <div className="text-gray-400 text-sm">กรุณารอสักครู่ ระบบกำลังประมวลผล</div>
+              </>
+            )}
+            {success && (
+              <>
+                <div className="mb-4 flex justify-center">
+                  <svg className="h-10 w-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div className="text-lg font-semibold mb-2">เติมเงินสำเร็จ!</div>
+                <div className="text-gray-400 text-sm mb-4">ขอบคุณที่ใช้บริการ</div>
+                <button onClick={handleCloseModal} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md mt-2">ไปหน้าหลัก</button>
+              </>
+            )}
+            {error && (
+              <>
+                <div className="mb-4 flex justify-center">
+                  <svg className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <div className="text-lg font-semibold mb-2">เกิดข้อผิดพลาด</div>
+                <div className="text-gray-400 text-sm mb-4">{error}</div>
+                <button onClick={handleCloseModal} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md mt-2">ปิด</button>
+              </>
+            )}
+            {showSlipModal && !slipSuccess && (
+              <form onSubmit={handleSubmitSlip} className="space-y-4">
+                <div className="mb-2 text-lg font-semibold">แนบสลิปการโอนเงิน</div>
+                <div className="mb-2 text-gray-400 text-sm">กรุณาอัปโหลดสลิปเพื่อรอตรวจสอบ (jpg, png, pdf)</div>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleSlipUpload}
+                  className="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  required
+                />
+                {slipFile && (
+                  <div className="text-green-400 text-sm">ไฟล์: {slipFile.name}</div>
+                )}
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md mt-2 disabled:opacity-60"
+                  disabled={!slipFile || loading}
+                >
+                  ส่งสลิป
+                </button>
+                <div>
+                  <button type="button" onClick={handleCloseModal} className="text-gray-400 text-xs mt-2 underline">ยกเลิก</button>
+                </div>
+              </form>
+            )}
+            {showSlipModal && slipSuccess && (
+              <>
+                <div className="mb-4 flex justify-center">
+                  <svg className="h-10 w-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div className="text-lg font-semibold mb-2">ส่งสลิปสำเร็จ!</div>
+                <div className="text-gray-400 text-sm mb-4">กรุณารอตรวจสอบยอดเงิน ทีมงานจะดำเนินการให้เร็วที่สุด</div>
+                <button onClick={handleCloseModal} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md mt-2">ไปหน้าหลัก</button>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
 
       <Footer />
     </>

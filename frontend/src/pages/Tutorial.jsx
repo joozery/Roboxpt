@@ -46,7 +46,8 @@ const Tutorial = () => {
               const isActive = currentVideo.title === t.title;
               return (
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.96 }}
+                  whileHover={{ scale: 1.06, boxShadow: '0 2px 16px 0 rgba(59,130,246,0.15)' }}
                   key={i}
                   onClick={() => setCurrentVideo(t)}
                   className={`px-5 py-2 text-sm font-medium rounded-md transition-all duration-200
@@ -54,6 +55,10 @@ const Tutorial = () => {
                       ? "bg-blue-500 text-white shadow-sm"
                       : "text-gray-300 hover:bg-[#2d3355] hover:text-white"
                     }`}
+                  aria-selected={isActive}
+                  role="tab"
+                  tabIndex={0}
+                  style={{ outline: isActive ? '2px solid #3b82f6' : 'none', outlineOffset: '2px' }}
                 >
                   {t.title}
                 </motion.button>
@@ -76,12 +81,13 @@ const Tutorial = () => {
                   key={currentVideo.url}
                   className="w-full"
                   controls
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.4 }}
+                  style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
                 >
-                  <source src={currentVideo.url} type="video/mp4" />
+                  <source src={currentVideo.url} type={currentVideo.url.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
                   Your browser does not support the video tag.
                 </motion.video>
               ) : (
