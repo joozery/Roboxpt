@@ -25,6 +25,25 @@ const faqs = [
   },
 ];
 
+const pdfLinks = [
+  {
+    title: "TERM OF SERVICE",
+    link: "/pdfs/term-of-service.pdf",
+  },
+  {
+    title: "REFUND POLICY",
+    link: "/pdfs/refund-policy.pdf",
+  },
+  {
+    title: "SELLER POLICY",
+    link: "/pdfs/seller-policy.pdf",
+  },
+  {
+    title: "WITHDRAW POLICY",
+    link: "/pdfs/withdraw-policy.pdf",
+  },
+];
+
 const Support = () => {
   const [activeTab, setActiveTab] = useState("general");
 
@@ -46,7 +65,7 @@ const Support = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-6">
           <div className="bg-[#1d1f3b] p-1 rounded-full flex gap-1 w-[400px] max-w-full">
             <button
               onClick={() => setActiveTab("general")}
@@ -68,12 +87,14 @@ const Support = () => {
         </div>
 
         {/* Content */}
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           {activeTab === "general" && (
             <div className="bg-[#1c1e3a] p-6 rounded-lg space-y-6">
               {faqs.map((faq, index) => (
                 <div key={index}>
-                  <p className="text-white font-semibold">#{index + 1} {faq.question}</p>
+                  <p className="text-white font-semibold">
+                    #{index + 1} {faq.question}
+                  </p>
                   <p className="text-gray-300 text-sm mt-1 whitespace-pre-line">{faq.answer}</p>
                 </div>
               ))}
@@ -81,16 +102,31 @@ const Support = () => {
           )}
 
           {activeTab === "terms" && (
-            <div className="bg-[#1c1e3a] p-6 rounded-lg text-gray-300 text-sm leading-relaxed">
-              <h2 className="text-white font-semibold text-lg mb-2">Terms of Service</h2>
-              <p>
-                Please read our terms before making a purchase. All sales are final unless the item
-                was not delivered due to system error or other qualifying conditions.
-              </p>
-              <p className="mt-2">
-                Refunds will be handled only under specific scenarios as mentioned. Contact our
-                support for more details.
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+              {pdfLinks.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-br from-[#1e2140] to-[#2e3270] p-6 rounded-xl border border-white/20 shadow-md"
+                >
+                  <h3 className="text-lg font-semibold text-yellow-400 text-center mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-center text-white mb-4">
+                    We’ve written these terms to help you understand how our services work,
+                    what you can expect from us, and what we ask of you in return
+                  </p>
+                  <div className="flex justify-center">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-1 border border-white text-white rounded-full text-sm hover:bg-white hover:text-black transition"
+                    >
+                      CLICK HERE
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
