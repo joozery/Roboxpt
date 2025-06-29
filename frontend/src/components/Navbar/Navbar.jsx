@@ -30,9 +30,12 @@ const Navbar = () => {
 
   // ฟังก์ชัน login Discord
   const loginWithDiscord = () => {
-    const baseURL = process.env.NODE_ENV === 'production'
-      ? 'https://ptstock-api-98e91618439c.herokuapp.com'
-      : 'http://localhost:6230';
+    let baseURL;
+    if (process.env.NODE_ENV === 'production') {
+      baseURL = window.location.origin; // ใช้ domain จริงอัตโนมัติ
+    } else {
+      baseURL = 'http://localhost:6230';
+    }
     window.open(
       `${baseURL}/api/auth/discord`,
       'Discord Login',
@@ -121,4 +124,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar; 
