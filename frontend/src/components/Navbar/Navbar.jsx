@@ -28,6 +28,18 @@ const Navbar = () => {
     setUser(null);
   };
 
+  // ฟังก์ชัน login Discord
+  const loginWithDiscord = () => {
+    const baseURL = process.env.NODE_ENV === 'production'
+      ? 'https://ptstock-api-98e91618439c.herokuapp.com'
+      : 'http://localhost:6230';
+    window.open(
+      `${baseURL}/api/auth/discord`,
+      'Discord Login',
+      'width=500,height=600,scrollbars=yes,resizable=yes'
+    );
+  };
+
   return (
     <>
       <div className="bg-[#191b31] text-white fixed top-0 left-0 w-full z-50 py-3 border-b border-white/30 shadow-sm font-['Prompt']">
@@ -60,7 +72,14 @@ const Navbar = () => {
 
           {/* Right Side: Icons + User Info */}
           <div className="flex items-center gap-4 text-base">
-            <FaDiscord className="text-xl hover:text-blue-400 cursor-pointer" />
+            {/* เปลี่ยน FaDiscord ให้เป็นปุ่ม */}
+            <button
+              onClick={loginWithDiscord}
+              className="text-xl hover:text-blue-400 cursor-pointer transition-colors"
+              title="Login with Discord"
+            >
+              <FaDiscord />
+            </button>
             <MdShield className="text-xl hover:text-blue-400 cursor-pointer" />
             <FaShoppingCart className="text-xl hover:text-blue-400 cursor-pointer" />
 

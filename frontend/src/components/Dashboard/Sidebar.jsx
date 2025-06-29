@@ -99,6 +99,10 @@ const Sidebar = () => {
             <FaMoneyCheckAlt size={18} />
             <span>Manage Payments</span>
           </NavLink>
+          <NavLink to="/dashboard/check-slips" className="sidebar-item">
+            <FaSearch size={18} />
+            <span>Check Slips</span>
+          </NavLink>
           <NavLink to="/dashboard/payment-reports" className="sidebar-item">
             <FaChartLine size={18} />
             <span>Payment Reports</span>
